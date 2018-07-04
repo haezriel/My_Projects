@@ -1,4 +1,4 @@
 # Michael Allen-Bond
 # michael_allen_bond@hotmail.com
 # My Projects
-This is previously written code by me or from projects I was involved in (open source), organized by language and project type.
+These are some of the projects I've worked on previously.  They are not particularly organized at the moment, and I'm still adding more, but I will incrementally organize and add READMEs over the next few weeks.
