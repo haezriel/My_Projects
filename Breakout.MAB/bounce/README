@@ -1,0 +1,74 @@
+Breakout V1 (Bounce V2)
+Michael Allen-Bond
+CS447 - Intro to Game Design
+09/16/15
+Dr. Scott Wallace
+
+
+Breakout Hotkeys:
+
+-K - Skip to Next Level (Starts at 0, goes up to 3, 4 levels total, I could have done more, but I didn't want redundancy in features)
+-Space - This starts the game from the Startup Screen, I didn't change this because it works, and I just didn't see a solid reason to change it.
+-ESC - This interrupts your current PlayingState game, and sends you back to the Startup Screen.  It will also stop the music, and give you control of your cursor again.
+-L - Don't Press this button unless you've tested everything else and are ready for something strange.
+-Left-Click (During Gameplay) - This will fire all available Power-Ups, and make you available to acquire more (You don't get to horde Bullet-Balls, sorry :p.  Although you can horde up to 4 Multi-Balls, which is fun).
+
+Breakout Features:
+
+For Breakout, I implemented  a paddle, an array of Bricks that scales to the resolution of the game screen, and various types of balls, powerups, and trajectory influences that comprise the Ball assets of Breakout.
+
+Brick Types:
+
+-Grey Bricks - These are only in the last 2 levels, when all power-ups are available, and the ball speed becomes much higher.  They crack after one hit, turn pink after the next hit, blue after the next, and then die on the 4th hit. Each hit will increase the ball's velocity.
+
+-Pink Bricks - These take one hit to turn blue, another to die.  Very common throughout the levels.
+
+-Blue Bricks - These take one hit to die, also very common.
+
+-??? Bricks - These are Powerup Bricks, they are the rarest, and depending on the level, will either offer Multi-Ball or Bullet-Ball, or both in later levels.
+
+Power-ups:
+
+-Multi-Ball - This creates another ball that will spawn on your paddle, and stick with it until you Left-Click.  The ball will then fire at either a slow, direct trajectory (on the lower levels) or a fast, random trajectory (higher levels).  I'll discuss Trajectories more later.  Multi-Ball can also be used as a buffer, as you will not lose a life for a ball dropping off the screen as long as you have a multi-ball in play, or available on the paddle.  If you get multiple Multi-Balls, they will stack up on the paddle, and can be fired off all at once.  However, you can only have a maximum of 4 balls in play at any time, and in later levels, all the balls are moving VERY fast.  I'd recommend using the multi-balls as a buffer if you have trouble with the later levels.
+
+-Bullet-Ball - This creates an Orange colored ball that will spawn IN your paddle, and stick with it until you Left-Click.  The ball will then fire straight up (-y) at a velocity of 2f (very fast), and destroy all blocks that it hits.  This ball can potentially destroy two columns of bricks at once, HOWEVER, you do NOT get the Power-Ups from ??? Bricks destroyed by the Bullet-Ball (I figured that would make the game extremely trivial).
+
+There is a 3rd Power-Up available if you press the L key, but this is a cheat, and mostly just my personal joke.
+
+Paddle:
+
+I hate keyboard controls, and I wanted to have very precise control over my paddle, so that I could play a high-speed game and still be able to keep up.  The PlayingState will remove your mouse cursor from the screen, although it will come back when you either beat the game, get a GameOver, or hit Esc.  This feels very responsive for me, and I'm actually really happy that it worked so well.
+
+The Paddle (ideally) bounces the ball upward even if you hit the ball with the sides of the paddle, so as long as you catch the ball before it's up the screen, you can save it (ideally).  The top of the paddle, however, will adjust the X value of the ball's directional vector depending on how far from the middle of the paddle you hit the ball.  In other words, if you hit the ball with the right side of the paddle, the ball's X trajectory will get pushed to the right, and vise-versa.  This allows you to "steer" the ball with the paddle.  The X and Y Vectors are also clamped with lower and higher bounds, so that you don't get your ball stuck bouncing back and forth across the screen horizontally (ideally), and in general the balls move as desired.  The Vector Max (x and y) is clamped at 2f, though, so these balls will go extremely fast before they hit the cap velocity.  
+
+The Ball:
+
+The Balls vary based on their types, but the standard Ball sits in an arraylist, and has pretty normal collision detection, with a small teleport buffer which displaces the ball by 10 pixels when it collides.  This is generally sufficient to prevent any collision detection bugs, even at high speeds, although edge cases are still possible.  As I said before, when the Ball hits the paddle, it will adjust it's directional vectors based on where it collides.  The ball also increases its speed by a small factor when it strikes a brick, and the level+1 (1,2,3,4) is used as a multiplier for the speed increase to create another growth in difficulty (aside from the higher initial ball speeds and stronger bricks).
+
+The Music and other Sound Effects:
+
+I'm sorry.  These were the last-minute features, and I wanted to have fun with them.  They do avoid playing over eachother though, which is nice.
+I did make a few changes to the explosions to make sure that they were only being applied to the colliding balls (as opposed to all balls), and I also made a single explosion noise for the bullet ball (as opposed to the cacophany it would normally generate).  For the most part, sound effects shouldn't ride over eachother much.
+
+The Levels:
+
+The Levels change without much ceremony, aside from the board resetting and the level counter incrementing.  Whenever I thought about making level banners and "transition" phases, I immediately had other ideas that seemed more important.  That said, there is a difference and a reasonable learning curve between each level.  I give the player 3 lives per level (not sure if that's what you wanted, but that's what they'll get), and the Levels start at 0.
+
+Level 0 - This level is slow, and the ??? bricks give the multi-ball perk, making it almost impossible to lose, though you can get used to using the paddle to adjust each ball's trajectory.  This just introduces the first perk, and is an easy intro level.
+
+Level 1 - This level does not have multi-ball, but instead has Bullet-Ball from the ???-Bricks. This is just another chance to show a power-up and allow the player to acquaint themselves. However, you only have one ball on this level, and your ball will accelerate faster than it did on level 0.  This can easily result in a relatively fast ball, although it's still pretty easy.
+
+Level 2 - This level takes a steep up-turn in difficulty, but grants you access to both power-ups, which you will definitely need.  The ball starts off at a much higher speed, and this level will require some strategy with the multi-ball and bullet-ball usage if you want to avoid losing lives. This level also introduces Grey Bricks, which take 4 hits to kill.
+
+Level 3 - This level increases the acceleration of your balls yet again, but it's a smaller step up from Level 2, and shouldn't be unreasonable if you were able to beat level 2.  Once again, you have access to all power-ups, but using them intelligently is necessary to win.
+
+None of the levels are particularly hard if you're honestly trying your best to beat them, but I mostly wanted to have fun with the game, as opposed to making a brutal challenge (which would be relatively easy with the current toolset).
+
+
+Anyways, I think that summarizes most of the big-picture stuff I did to create Breakout!  Hopefully you find it entertaining!
+
+Resources:
+
+I used some non-copy-written content from Youtube (converted to .wav), and I edited some PNG files for the graphics, as well as an image from Google.
+
+All graphics and sound files are located in the resource folder, and will be included in the repository .tgz file

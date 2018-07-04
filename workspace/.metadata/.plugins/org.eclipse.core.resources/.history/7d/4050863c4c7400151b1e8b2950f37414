@@ -1,0 +1,247 @@
+package gmbmd;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import jig.Vector;
+
+public class Map {
+	public static final Vector UP = new Vector(0, -1);
+	public static final Vector DOWN = new Vector(0, 1);
+	public static final Vector RIGHT = new Vector(1, 0);
+	public static final Vector LEFT = new Vector(-1, 0);
+	int maxX;
+	int maxY;
+	Grid[][] map;
+	ArrayList<Enemy> entities;
+	ArrayList<Object> objects;
+	ArrayList<Grid> open = new ArrayList<Grid>(50);
+	ArrayList<Grid> closed = new ArrayList<Grid>(50);
+	Grid Astar = null;
+	
+
+	public Map(int X, int Y, int level) {
+		maxX = X / 50;
+		maxY = Y / 50;
+		objects = new ArrayList<Object>(50);
+		entities = new ArrayList<Enemy>(200);
+		map = new Grid[maxX+1][maxY+1];
+		for (int i = 0; i < maxX; i++) {
+			for (int j = 0; j < maxY; j++) {
+				map[i][j] = new Grid(i, j, i * 50, j * 50, false);
+			}
+		}
+		int x;
+		int y;
+		switch (level) {
+
+		case 1:
+			for (int i = 0; i<10;i++){
+				x=(int) (Math.random()*(maxX-1));
+				y=(int) (Math.random()*(maxY-1));
+				putObject(x,y,0);
+			}
+			
+			for (int i = 0; i<40;i++){
+				x=(int) (Math.random()*(maxX-1));
+				y=(int) (Math.random()*(maxY-1));
+				putGentity(x,y,0);	
+			}
+			break;
+		default:
+			break;
+		}	
+		
+	}
+	public void mapUpdate(){
+		for(int i=0;i<entities.size();i++){
+			map[entities.get(i).getGridX()][entities.get(i).getGridY()].empty=false;
+			map[entities.get(i).getGridX()][entities.get(i).getGridY()].updated=true;
+		}
+		for(int i=0;i<maxX;i++)
+			for(int j=0;j<maxY;j++){
+				if(map[i][j].updated==false)
+					map[i][j].empty=true;
+			}
+	}
+
+	public void putGentity(int X, int Y, int type) {
+		if (map[X][Y].empty == true) 
+			entities.add(new Enemy(X * 50, Y * 50, 0));
+		//	map[X][Y].empty = false;
+	//	}
+	}
+	public void putObject(int X, int Y, int type){
+		switch(type){
+		case 0:
+		if (map[X][Y].empty == true) {
+			objects.add(new Object(X * 50, Y * 50, 0));
+			map[X][Y].empty = false;
+		if(Y+1<=maxY)	map[X][Y+1].empty=false;
+		}
+		}
+	}
+	
+	public void move(Enemy chicken, int X, int Y) {
+		int Gx = (int) chicken.getX() / 50;
+		int Gy = (int) chicken.getX() / 50;
+		Vector move = new Vector(0,0);
+		if (X > Gx)
+			move=move.add(RIGHT);
+		else if (X < Gx)
+			move = move.add(LEFT);
+		
+		if (Y > Gy)
+			move =move.add(UP);
+		else if (Y < Gy)
+			move = move.add(DOWN);
+		chicken.translate(move);
+
+	}
+
+	public void pathfind(Enemy chicken, Player player) {
+		int Px = (int) player.getX() / 50;
+		int Py = (int) player.getY() / 50;
+		int Gx = chicken.getGridX();
+		int Gy = chicken.getGridY();
+		System.out.println(Gx + " " + Gy);
+		Grid key = map[Gx][Gy];
+		open.add(map[Gx][Gy]);
+		while (!open.isEmpty()) {
+			if (open.get(0).key.distance(player.getPosition()) <= 50)
+				break;
+			closed.add(open.get(0));
+			if (open.get(0).x - 1 > 0)
+				if (map[open.get(0).x - 1][open.get(0).y].empty == true
+						&& !open.contains(map[open.get(0).x - 1][open.get(0).y])
+						&& !closed.contains(map[open.get(0).x - 1][open.get(0).y])) {
+					Grid next1 = new Grid(map[open.get(0).x - 1][open.get(0).y]);
+					next1.direction=LEFT;
+					//if (next1.parent==null)
+					next1.parent = open.get(0);
+					next1.H = (next1.key.distance(player.getPosition())) / 50;
+					next1.G = next1.cost + open.get(0).G;
+					next1.F = next1.G + next1.H;
+					open.add(next1);
+				}
+			if (open.get(0).x + 1 < maxX)
+				if (map[open.get(0).x + 1][open.get(0).y].empty == true
+						&& !open.contains(map[open.get(0).x + 1][open.get(0).y])
+						&& !closed.contains(map[open.get(0).x + 1][open.get(0).y])) {
+					Grid next2 = new Grid(map[open.get(0).x + 1][open.get(0).y]);
+					next2.direction=RIGHT;
+					//if (next2.parent==null)
+					next2.parent = open.get(0);
+					next2.H = (next2.key.distance(player.getPosition())) / 50;
+					next2.G = next2.cost + open.get(0).G;
+					next2.F = next2.G + next2.H;
+					open.add(next2);
+				}
+			if (open.get(0).y - 1 > 0)
+				if (map[open.get(0).x][open.get(0).y - 1].empty == true
+						&& !open.contains(map[open.get(0).x][open.get(0).y - 1])
+						&& !closed.contains(map[open.get(0).x][open.get(0).y - 1])) {
+					Grid next3 = new Grid(map[open.get(0).x][open.get(0).y - 1]);
+					next3.direction=UP;
+					//if (next3.parent==null)
+					next3.parent = open.get(0);
+					next3.H = (next3.key.distance(player.getPosition())) / 50;
+					next3.G = next3.cost + open.get(0).G;
+					next3.F = next3.G + next3.H;
+					open.add(next3);
+				}
+			if (open.get(0).y + 1 < maxY)
+				if (map[open.get(0).x][open.get(0).y + 1].empty == true
+						&& !open.contains(map[open.get(0).x][open.get(0).y + 1])
+						&& !closed.contains(map[open.get(0).x][open.get(0).y + 1])) {
+					Grid next4 = new Grid(map[open.get(0).x][open.get(0).y + 1]);
+					next4.direction=DOWN;
+					//if (next4.parent==null)
+					next4.parent = open.get(0);
+					next4.H = (next4.key.distance(player.getPosition())) / 50;
+					next4.G = next4.cost + open.get(0).G;
+					next4.F = next4.G + next4.H;
+					open.add(next4);
+				}
+			if (open.get(0).x - 1 > 0 && open.get(0).y - 1 > 0)
+				if (map[open.get(0).x - 1][open.get(0).y - 1].empty == true
+						&& !open.contains(map[open.get(0).x - 1][open.get(0).y - 1])
+						&& !closed.contains(map[open.get(0).x - 1][open.get(0).y - 1])) {
+					Grid next5 = new Grid(map[open.get(0).x - 1][open.get(0).y - 1]);
+					next5.direction=UP.add(LEFT);
+					//if (next5.parent==null)
+					next5.parent = open.get(0);
+					next5.H = (next5.key.distance(player.getPosition())) / 50;
+					next5.G = next5.cost + open.get(0).G;
+					next5.F = next5.G + next5.H;
+					open.add(next5);
+				}
+			if (open.get(0).x - 1 > 0 && open.get(0).y + 1 < maxY)
+				if (map[open.get(0).x - 1][open.get(0).y + 1].empty == true
+						&& !open.contains(map[open.get(0).x - 1][open.get(0).y + 1])
+						&& !closed.contains(map[open.get(0).x - 1][open.get(0).y + 1])) {
+					Grid next6 = new Grid(map[open.get(0).x - 1][open.get(0).y + 1]);
+					next6.direction=DOWN.add(LEFT);
+					//if (next6.parent==null)
+					next6.parent = open.get(0);
+					next6.H = (next6.key.distance(player.getPosition())) / 50;
+					next6.G = next6.cost + open.get(0).G;
+					next6.F = next6.G + next6.H;
+					open.add(next6);
+				}
+			if (open.get(0).x + 1 < maxX && open.get(0).y - 1 > 0)
+				if (map[open.get(0).x + 1][open.get(0).y - 1].empty == true
+						&& !open.contains(map[open.get(0).x + 1][open.get(0).y - 1])
+						&& !closed.contains(map[open.get(0).x + 1][open.get(0).y - 1])) {
+					Grid next7 = new Grid(map[open.get(0).x + 1][open.get(0).y - 1]);
+					next7.direction=UP.add(RIGHT);
+					//if (next7.parent==null)
+					next7.parent = open.get(0);
+					next7.H = (next7.key.distance(player.getPosition())) / 50;
+					next7.G = next7.cost + open.get(0).G;
+					next7.F = next7.G + next7.H;
+					open.add(next7);
+				}
+			if (open.get(0).x + 1 < maxX && open.get(0).y + 1 < maxY)
+				if (map[open.get(0).x + 1][open.get(0).y + 1].empty == true
+						&& !open.contains(map[open.get(0).x + 1][open.get(0).y + 1])
+						&& !closed.contains(map[open.get(0).x + 1][open.get(0).y + 1])) {
+					Grid next8 = new Grid(map[open.get(0).x + 1][open.get(0).y + 1]);
+					next8.direction=DOWN.add(RIGHT);
+					//if (next8.parent==null)
+					next8.parent = open.get(0);
+					next8.H = (next8.key.distance(player.getPosition())) / 50;
+					next8.G = next8.cost + open.get(0).G;
+					next8.F = next8.G + next8.H;
+					open.add(next8);
+				}
+			open.remove(open.get(0));
+			Collections.sort(open, new Comparator<Grid>() {
+				@Override
+				public int compare(Grid a, Grid b) {
+					if (a.F > b.F)
+						return 1;
+					if (a.F < b.F)
+						return -1;
+					return 0;
+				}
+			});
+		}
+		if (open.isEmpty()){
+			return;
+		}
+		Astar=open.get(0);
+		while (Astar.parent != map[Gx][Gy] && Astar.parent!=null)
+			Astar = Astar.parent;
+		System.out.println("path found " + Gx+ " -> " + Astar.x + ": "+Gy + " -> " + Astar.y);
+		open.clear();
+		closed.clear();
+		chicken.prevX=Gx;
+		chicken.prevY=Gy;
+		chicken.movement=(Astar.direction);
+		//move(chicken, Astar.x, Astar.y);
+
+
+	}
+}

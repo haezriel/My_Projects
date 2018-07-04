@@ -1,0 +1,72 @@
+Michael Allen-Bond
+SID: 11386199
+1/18/2016
+CS 460
+Dr. Zhang
+
+Project 0: Running and debugging xv6
+
+
+GDB Output:
+
+(gdb) target remote localhost:26006
+Remote debugging using localhost:26006
+0x0000fff0 in ?? ()
+(gdb) b exec
+Breakpoint 1 at 0x80100b71: file exec.c, line 12.
+(gdb) c
+Continuing.
+[Switching to Thread 2]
+
+Breakpoint 1, exec (path=0x1c "/init", argv=0x8dfffec8) at exec.c:12
+12	{
+(gdb) c
+Continuing.
+
+Breakpoint 1, exec (path=0x885 "sh", argv=0x8dffeec8) at exec.c:12
+12	{
+(gdb) c
+Continuing.
+[Switching to Thread 1]
+
+Breakpoint 1, exec (path=0x19c0 "dcat", argv=0x8dfbeec8) at exec.c:12
+12	{
+(gdb) p argv[0]
+$1 = 0x19c0 "dcat"
+(gdb) p argv[1]
+$2 = 0x19c5 "README"
+(gdb) p argv[2]
+$3 = 0x0
+(gdb) bt
+#0  exec (path=0x19c0 "dcat", argv=0x8dfbeec8) at exec.c:12
+#1  0x80106325 in sys_exec () at sysfile.c:417
+#2  0x80105684 in syscall () at syscall.c:133
+#3  0x80106847 in trap (tf=0x8dfbefb4) at trap.c:43
+#4  0x80106639 in alltraps () at trapasm.S:23
+#5  0x8dfbefb4 in ?? ()
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+(gdb) up
+#1  0x80106325 in sys_exec () at sysfile.c:417
+417	  return exec(path, argv);
+(gdb) l
+412	      break;
+413	    }
+414	    if(fetchstr(uarg, &argv[i]) < 0)
+415	      return -1;
+416	  }
+417	  return exec(path, argv);
+418	}
+419	
+420	int
+421	sys_pipe(void)
+(gdb) Quit
+
+
+Qemu Shell Output:
+
+xv6...
+cpu1: starting
+cpu0: starting
+dsb: size 1000 nblocks 941 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
+init: starting sh
+$ cat README

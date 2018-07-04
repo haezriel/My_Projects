@@ -1,0 +1,168 @@
+Michael Allen-Bond
+CS355
+Dr. Cochran
+C++ Primer Assignment
+
+1.
+a)
+	CharGrid1(int w, int h, char ch= ' ')
+	: _width{w}, _height{h}, _grid{new char[w*h]} {}
+	
+	char *operator[](int r) {return &_grid[r*_width];} 
+	
+	//These both change values.
+
+b) 
+	*_grid is dynamically allocated, and isn't being deleted, so it will cause memory leaks if the program keeps running and creating new grids.  This can be fixed by placing a '~CharGrid1() {delete[] _grid;}' at the end of the header file (I hope).
+
+c)
+	This would just cause B to point to A, so if A gets changed, so does B.  To resolve this, there needs to be a copy constructor and an assignment operator overload:
+
+	CharGrid1(const CharGrid1& other); // Copy Constructor
+	CharGrid1& operator=(const CharGrid1& other); // Copy Assign 
+
+//Inside CharGrid1.cpp:
+
+	CharGrid1::CharGrid1(const CharGrid1& other)
+	 : _width{other._width},
+	 _height{other._height},
+	 _grid{new char[other._width*other._height]}
+	 {
+	 for (int i = 1; i <= _width*_height; i++)
+	 	_grid[i]=other._grid[i];
+	 }
+
+	CharGrid1& CharGrid1::operator=(const CharGrid1& other) {
+	 if (this != &other) {
+	 _width = other._width;
+	 _height = other._height;
+	 delete[] _grid;
+	 _grid = new char[_width*_height];
+	 for (int i = 1; i <= _width*_height; i++)
+	 	_grid[i]=other._grid[i];
+	 }
+	 return *this;
+	 }
+
+d)
+	Same process for Move:
+
+CharGrid1(CharGrid1&& other); // Move Constructor
+CharGrid1& operator=(CharGrid1&& other); // Move Assign 
+
+//Inside CharGrid1.cpp:
+
+CharGrid1::CharGrid1(CharGrid1&& other) : _width{0},
+_height{0},
+ _grid{nullptr}
+{
+ _width = other._width;
+ _height = other._height;
+ _grid = other._grid;
+ other._width = 0;
+ other._height = 0;
+ other._grid = nullptr;
+}
+
+CharGrid1& CharGrid1::operator=(CharGrid1&& other) {
+ if (this != &other) {
+ _width= other._width;
+ _height = other._height;
+ delete[] _grid;
+ _grid = other._grid;
+ other._height = 0;
+ other._width = 0;
+ other._grid = nullptr;
+ }
+ return *this;
+}
+	
+2.
+
+a)
+ 	int width() const {return _grid[0].capacity();} 
+	int height() const {return _grid.capacity();}
+
+b)	
+	As explained by Stack Overflow, if something isn't allocated with "new", it does not need to be deleted.  In the case of vectors, we're using a standard procedure as opposed to allocating a memory location ourselves, so it doesn't need to be de-allocated by us.
+
+c)
+	There is a built-in deep copy for vectors in the std library:
+	copy (1)	
+	vector& operator= (const vector& x);
+	move (2)	
+	vector& operator= (vector&& x);
+	
+	The example I found online demonstrates this well:
+
+	int main ()
+	{
+	  std::vector<int> foo (3,0);
+	  std::vector<int> bar (5,0);
+
+	  bar = foo;
+	  foo = std::vector<int>();
+
+	  std::cout << "Size of foo: " << int(foo.size()) << '\n';
+	  std::cout << "Size of bar: " << int(bar.size()) << '\n';
+	  return 0;
+	}
+
+	Output:
+	Size of foo: 0
+	Size of bar: 3
+
+3. 
+	Modified function:
+  unsigned long operator()(int n, int k) const {
+    if (k > n/2)
+      k = n - k;
+    if (k == 0)
+      return 1;
+    if (k == 1)
+      return n;
+    if (k == 2)
+      return n*(n-1)/2;
+    // really slow version
+    if (table[std::make_pair(n,k)]==0){
+      table[std::make_pair(n,k)]= 
+       (*this)(n-1,k-1) + (*this)(n-1,k);
+    }
+    return table[std::make_pair(n,k)];
+  }
+};
+
+Bonus:
+	The mutable keyword explicitly defines the elements of the container as modifiable, even if the container itself is const.
+	
+
+4.
+
+a)
+	ii. "M", "G", "P", "A", "J", "Z" 
+	~StringSet() deletes root, which deletes Node M,
+	~Node() deletes the left and right nodes of M when deleting M, which deletes G and P, and then their children, A,J,Z.
+	At least, that's what I'm assuming happens.
+
+b)
+	True, this would work, as you are creating a new StringSet, and do not need to modify the StringSet being passed. However, passing by value into a const would create a const copy of that structure, which would use up extra memory, and possibly take much longer, if the tree is sufficiently large.
+
+c)
+	True, this should work too, I believe?  If it's not const, and it's passed by value, then it should still function properly. It's still making a copy of the structure, so it would be slower, but assuming I understand the merge function properly, this doesn't break it.
+
+d)
+	No, this would not work.  You would be creating a copy of StringSet, modifying it with merge, and then returning from the function without actually changing anything in the original StringSet.  Passing by reference allows you to point to the original and then modify it.
+
+e)
+	Mmm, I don't think so.  Since U gets merged into S, which is the original StringSet, this would mean that when S gets deleted, it will recursively travel down through and delete U (and it's sub-nodes) as well.
+
+5.
+
+a)
+	foo.digits = {0,0,0,0,0,0,0,0,3} pre-increments foo 3 times.
+	bar.digits = {0,0,0,0,0,0,0,0,4} assigned 3 by pre-incremented foo, and then increments once more after assigning to dad.
+	dad.digits = {0,0,0,0,0,0,0,0,3} assigned 3 by bar before it incremented.
+
+b)
+	Using the methods in the struct,  pre-increment is more efficient, since it contains the actual logic for incrementation.  The post-increment method just copies the old value, calls a pre-increment on the old value (which calls the pre-inc method), and returns the copy.  In terms of time/steps/memory usage, this is overall less efficient than just using the pre-increment.
+	

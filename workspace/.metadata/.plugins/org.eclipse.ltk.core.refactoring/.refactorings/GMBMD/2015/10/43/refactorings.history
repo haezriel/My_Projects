@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;gmbmd.Bang&apos; to &apos;Animations&apos;&#x0A;- Original project: &apos;GMBMD&apos;&#x0A;- Original element: &apos;gmbmd.Bang&apos;&#x0A;- Renamed element: &apos;gmbmd.Animations&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Bang&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;gmbmd{Bang.java[Bang" matchStrategy="1" name="Animations" qualified="false" references="true" similarDeclarations="false" stamp="1445223484874" textual="false" version="1.0"/>
+</session>

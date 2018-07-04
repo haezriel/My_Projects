@@ -1,0 +1,28 @@
+import java.net.ServerSocket;
+import java.net.Socket;
+
+
+public class ServerMain {
+	Socket socket1,socket2;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Socket sock;
+
+	    try{	
+	    	ServerSocket ss=new ServerSocket(1201);	
+
+		
+	    while (true){
+		  sock=ss.accept();	
+		  
+		  System.out.println("Received a connection from " + sock);
+		  (new Thread(new FromSocketServer(sock))).start();
+		  (new Thread(new ToSocketServer(sock))).start();
+		  }
+	    } catch (Exception e){
+	      System.out.println("Socket-related exception: " + e);
+	    }
+
+	}
+
+}

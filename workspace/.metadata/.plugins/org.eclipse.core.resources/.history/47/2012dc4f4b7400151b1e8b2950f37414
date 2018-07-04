@@ -1,0 +1,29 @@
+package gmbmd;
+
+import jig.Entity;
+import jig.ResourceManager;
+import jig.Vector;
+
+public class Object extends Entity {	
+	
+	int type;
+
+	public Object(final float x, final float y, final int state) {
+		super(x, y);
+		type=state;
+		switch (type) {
+		case 0:
+			addImageWithBoundingBox(ResourceManager.getImage(GMBMDGame.BLOCK1_BLOCK_RSC));
+			
+		case 1:
+			addImageWithBoundingBox(ResourceManager.getImage(GMBMDGame.TOPWALL_RSC));
+			break;
+		case 2:
+			addImageWithBoundingBox(ResourceManager.getImage(GMBMDGame.BOTTOMWALL_RSC));
+			break;
+		case 3:
+			addImageWithBoundingBox(ResourceManager.getImage(GMBMDGame.BRICK4_BRICK42IMG_RSC));
+			break;
+		}
+}
+}

@@ -1,0 +1,9 @@
+CC=gcc
+CFLAGS=-g
+DEPS=key.h
+P8:	P8.c $(DEPS)
+	$(CC) $(CFLAGS) -o knap P8.c -lm
+
+clean:
+	rm knap
+

@@ -1,0 +1,85 @@
+Michael Allen-Bond
+CS355
+Dr. Cochran
+C++ Primer Assignment
+
+1.
+a)
+	CharGrid1(int w, int h, char ch= ' ')
+	: _width{w}, _height{h}, _grid{new char[w*h]} {}
+	
+	char *operator[](int r) {return &_grid[r*_width];} 
+	
+	//These both change values.
+
+b) 
+	*_grid is dynamically allocated, and isn't being deleted, so it will cause memory leaks if the program keeps running and creating new grids.  This can be fixed by placing a '~CharGrid1() {delete[] _grid;}' at the end of the header file (I hope).
+
+c)
+	This would just cause B to point to A, so if A gets changed, so does B.  To resolve this, there needs to be a copy constructor and an assignment operator overload:
+
+	CharGrid1(const CharGrid1& other); // Copy Constructor
+	CharGrid1& operator=(const CharGrid1& other); // Copy Assign 
+
+//Inside CharGrid1.cpp:
+
+	CharGrid1::CharGrid1(const CharGrid1& other)
+	 : _width{other._width},
+	 _height{other._height},
+	 _grid{new char[other._width*other._height]}
+	 {
+	 for (int i = 1; i <= _width*_height; i++)
+	 	_grid[i]=other._grid[i];
+	 }
+
+	CharGrid1& CharGrid1::operator=(const CharGrid1& other) {
+	 if (this != &other) {
+	 _width = other._width;
+	 _height = other._height;
+	 delete[] _grid;
+	 _grid = new char[_width*_height];
+	 for (int i = 1; i <= _width*_height; i++)
+	 	_grid[i]=other._grid[i];
+	 }
+	 return *this;
+	 }
+
+d)
+	Same process for Move:
+
+CharGrid1(CharGrid1&& other); // Move Constructor
+CharGrid1& operator=(CharGrid1&& other); // Move Assign 
+
+//Inside CharGrid1.cpp:
+
+CharGrid1::CharGrid1(CharGrid1&& other) : _width{0},
+_height{0},
+ _grid{nullptr}
+{
+ _width = other._width;
+ _height = other._height;
+ _grid = other._grid;
+ other._width = 0;
+ other._height = 0;
+ other._grid = nullptr;
+}
+
+CharGrid1& CharGrid1::operator=(CharGrid1&& other) {
+ if (this != &other) {
+ _width= other._width;
+ _height = other._height;
+ delete[] _grid;
+ _grid = other._grid;
+ other._height = 0;
+ other._width = 0;
+ other._grid = nullptr;
+ }
+ return *this;
+}
+	
+
+
+
+
+
+

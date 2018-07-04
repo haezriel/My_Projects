@@ -1,0 +1,158 @@
+[
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "1090175837308811bb8bb8907f7ff90533a1cc2a",
+    "jarFileModificationDate": "2012-01-22T15:44:05-08:00",
+    "location": "/usr/share/java/java-atk-wrapper.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "9df8588de23d0be621b00f05b662bcd6c98cb265",
+    "jarFileModificationDate": "2014-04-17T20:10:52-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/sunjce_provider.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "826b62388f14575470dac108d4f92d805bacf2a0",
+    "jarFileModificationDate": "2014-04-17T20:00:58-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/pulse-java.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "8d8ef9d4601df6240f650a0a684708b0c3b4e380",
+    "jarFileModificationDate": "2014-04-17T20:10:36-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/localedata.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "63c54e5c1df134980ea09de4adfafad2759e0989",
+    "jarFileModificationDate": "2014-04-17T20:15:46-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rt.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "7443de44f42dea295fca6c99144e57b7897759d9",
+    "jarFileModificationDate": "2014-04-17T20:18:54-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/resources.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "3c0e2a95dbb33d3218e8975f43e1c997fb30d329",
+    "jarFileModificationDate": "2014-04-17T20:18:54-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/jsse.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "e774469ba64cd301d332415cec5ba6fb0c6358c6",
+    "jarFileModificationDate": "2014-04-17T20:09:38-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/dnsns.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "1b262bfe87f10923e843524748e2ab2f6bb7edb0",
+    "jarFileModificationDate": "2014-04-17T20:10:39-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/charsets.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "3f2a4988451701c7b0de9abb0197ae770946818a",
+    "jarFileModificationDate": "2014-04-17T20:09:32-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/sunpkcs11.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "7f2e459eefa1c0c47961819b2c797ae9de1560c5",
+    "jarFileModificationDate": "2014-04-17T20:09:16-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/jce.jar",
+    "javaRuntime": true
+  },
+  {
+    "symbolicName": "jre",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "micro": 0,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "d2cd300e52b6b3de0c4f273f49336a7f60af7413",
+    "jarFileModificationDate": "2014-04-17T20:18:54-07:00",
+    "location": "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rhino.jar",
+    "javaRuntime": true
+  }
+]

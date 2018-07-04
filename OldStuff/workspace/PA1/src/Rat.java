@@ -1,0 +1,121 @@
+//Michael Allen-Bond
+//CSE 223
+//Programming Assignment 1
+//This class creates and executes various operations with rational numbers,
+//And can be called by any function in the same package.
+//To execute, run the Allen_Bond_M_1.java program, which will give you some test runs
+//as well as a prompt to enter your own test input.
+//I didn't debug the Scanner prompt as it was primarily for my own use,
+//so DON'T BREAK IT, YOU SILLY.
+
+//Main class initialization, kind of like creating a structure in C.
+public class Rat {
+	int numer,denom;
+	
+//Two input Rat initializer, reduces to simplest form.
+	public Rat(int num, int num2){
+		numer=num;
+		denom=num2;
+		reduce();
+	}
+	
+//Single input Rat initializer
+	public Rat(int num){
+		numer=num;
+		denom=1;
+	}
+	
+//Does the thing that you know it does.
+	int num(){
+		return numer;
+		
+	}
+
+//Returns the return thing.
+	int denom(){
+		return denom;
+	}
+
+//Adds 2 rational numbers. Creates new Rat to hold sum, instantiated with formula,
+//reduces it, returns.
+	Rat add(Rat num){
+		Rat sum=new Rat(numer*num.denom+denom*num.numer,denom*num.denom);
+		sum.reduce();
+		return sum;
+	}
+	
+//Subtracts 2 rational numbers, creates new Rat to hold difference,
+//instantiated with formula. Reduces, returns.
+	Rat sub(Rat num){
+		Rat diff=new Rat(numer*num.denom-denom*num.numer,denom*num.denom);
+		diff.reduce();
+		return diff;
+	}
+	
+//Divides 2 rational numbers, creates new Rat to hold quotient,
+//initialized with formula. Reduces, returns.
+	Rat div(Rat num){
+		Rat quotient=new Rat(numer*num.denom,denom*num.numer);
+		quotient.reduce();
+		return quotient;
+	}
+	
+//Multiplies 2 rational numbers, creates new Rat to hold product,
+//initialized with formula. Reduces, returns.
+	Rat times(Rat num){
+		Rat product=new Rat(numer*num.numer,denom*num.denom);
+		product.reduce();
+		return product;
+	}
+
+//calculates decimal value of rational number. turns both numer and denom into doubles,
+//then divides them.
+	Double toDouble(){
+		double numerd=(double)numer;
+		double denomd=(double)denom;
+		double decimal=numerd/denomd;
+		return decimal;
+	}
+	
+//Reduces rational numbers to their simplest form.
+//if denom is 0, returns, if numer%denom is 0, divides both by denom, returns,
+//else continually takes modulus with swapping values until 0, and then divides by
+//final b value.
+	private void reduce(){
+		int a,b,x;
+		a=numer;
+		b=denom;
+		if(b==0) return;
+		if(a%b==0){
+			numer=numer/b;
+			denom=denom/b;
+			return;
+		}
+		while(a%b!=0){
+			x=a%b;
+			a=b;
+			b=x;
+		}
+		numer=numer/b;
+		denom=denom/b;
+		return;
+	}
+	
+//reduces (redundant, but I do it anyways because I'm paranoid),
+//and then goes through various print functions based on the structure of the number.
+	void print(){
+		reduce();
+		if(denom==1){
+		System.out.println(numer);
+		}
+		else if(denom==-1){
+			System.out.println(-numer);
+		}
+		else if (denom>1 || denom==0){
+			System.out.println(numer+"/"+denom);
+		}
+		else if (denom<-1){
+			System.out.println(-numer+"/"+-denom);
+		}
+	}
+}

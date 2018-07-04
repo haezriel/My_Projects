@@ -1,0 +1,35 @@
+import java.util.Scanner;
+
+
+public class Allen_Bond_M_1 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.print("Enter your fractions as 'numerator denominator':");
+		Scanner s=new Scanner(System.in);
+		while(s.hasNextInt()){
+			int a=s.nextInt();
+			int b=s.nextInt();
+			Rat c=new Rat(a,b);
+			c.print();
+			System.out.println("In decimal form ="+c.toDouble());
+			System.out.print("Now enter a second fraction for arithmetic testing:");
+			int d=s.nextInt();
+			int e=s.nextInt();
+			Rat f=new Rat(d,e);
+			System.out.print("quotient =");
+			Rat g=c.div(f); g.print();
+			System.out.print("sum =");
+			g=c.add(f); g.print();
+			System.out.print("product =");
+			g=c.times(f); g.print();
+			System.out.print("difference =");
+			g=c.sub(f); g.print();
+			System.out.print("Enter your fractions as 'numerator denominator':");
+		}
+	}
+}
+

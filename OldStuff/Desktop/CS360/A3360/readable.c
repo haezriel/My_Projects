@@ -1,0 +1,67 @@
+//Michael Allen-Bond
+//CS 360
+//Dr. Lang
+//Programming Assignment 3
+/* This program will recursively traverse directories within your input directory 
+and print out the full path names of all regular readable files in the directories*/
+
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <dirent.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+
+int lstat(const char *path, struct stat *buf);
+
+
+void readit(char name[]){
+	struct stat type;
+    struct dirent *dir_entry;	
+	DIR *dir1;
+	char pathname[555];
+	getcwd(pathname,555);
+	dir1=opendir(name);
+	chdir(name);
+    while((dir_entry=readdir(dir1))!=NULL){
+		if((strcmp(dir_entry->d_name,"."))!=0 && (strcmp(dir_entry->d_name,".."))!=0){		
+			lstat(dir_entry->d_name, &type);
+			if(S_ISDIR(type.st_mode)){
+				readit(dir_entry->d_name);
+			}				
+			else if(S_ISREG(type.st_mode)){
+				if(access (dir_entry->d_name, R_OK)==0){
+				//printf("%s/%s\n",pathname,dir_entry->d_name);
+				}
+			}
+
+		}		
+	}
+	chdir("..");
+	closedir(dir1);
+	return;
+}
+
+int main (int argc, char *argv []){
+
+	struct stat type;
+	char buffer[255];
+	if(argv[1]!=NULL){
+		strcpy(buffer,argv[1]);
+	}
+	else if(getcwd(buffer,255)==NULL){
+		fprintf(stderr,"No current directory, where are you...\n");
+		exit(1);	
+	}
+	lstat(buffer,&type);
+	if(S_ISDIR(type.st_mode)){
+	readit(buffer);
+	}
+	else fprintf(stderr,"That's not a directory.\n");
+	exit(0);
+}
+
+

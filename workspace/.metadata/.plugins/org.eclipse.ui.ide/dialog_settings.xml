@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="CleanDialogSettings">
+		<item value="569" key="DIALOG_WIDTH"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+		<item value="386" key="DIALOG_HEIGHT"/>
+		<item value="434" key="DIALOG_X_ORIGIN"/>
+		<item value="154" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="ExternalProjectImportWizard">
+	</section>
+	<section name="NewWizardAction">
+	</section>
+	<section name="BasicNewProjectResourceWizard">
+	</section>
+	<section name="SaveAsDialogSettings">
+		<item value="613" key="DIALOG_WIDTH"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+		<item value="601" key="DIALOG_HEIGHT"/>
+		<item value="347" key="DIALOG_X_ORIGIN"/>
+		<item value="3" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

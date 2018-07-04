@@ -1,0 +1,329 @@
+Michael Allen-Bond
+CS440
+Problem Set 1
+Dr. Wallace
+
+
+Problem 1(c)
+
+Source code changes (in agents.py, environment.py):
+
+    Environment.__init__(self)
+    	self.status = { (0,0):random.choice(['Clean', 'Dirty']),
+                 (0,1):random.choice(['Clean', 'Dirty']),
+                 (0,2):random.choice(['Clean', 'Dirty']),
+                 (1,0):random.choice(['Clean', 'Dirty']),
+                 (1,1):random.choice(['Clean', 'Dirty']),
+                 (1,2):random.choice(['Clean', 'Dirty']),
+                 (2,0):random.choice(['Clean', 'Dirty']),
+                 (2,1):random.choice(['Clean', 'Dirty']),
+                 (2,2):random.choice(['Clean', 'Dirty'])}
+
+    def execute_action(self, agent, action):
+        """Change agent's location and/or location's status; track performance.
+        Score 10 for each dirt cleaned; -1 for each move."""
+        if action == 'Right':
+         if agent.location[0] < 2:
+            agent.location=(agent.location[0]+1,agent.location[1])
+            agent.performance -= 1
+        elif action == 'Left':
+         if agent.location[0] > 0:
+            agent.location=(agent.location[0]-1,agent.location[1])
+            agent.performance -= 1
+        elif action == 'Up':
+         if agent.location[1] < 2:
+            agent.location=(agent.location[0],agent.location[1]+1)
+            agent.performance -= 1
+        elif action == 'Down':
+         if agent.location[1] > 0:
+            agent.location=(agent.location[0],agent.location[1]-1)
+            agent.performance -= 1
+        elif action == 'Suck':
+            if self.status[agent.location] == 'Dirty':
+                agent.performance += 10
+            self.status[agent.location] = 'Clean'
+
+    def default_location(self, object):
+        "Agents start in either location at random."
+        return random.choice([(0,0), (1,0),(2,0),(0,1),(0,2),(1,1),(1,2),(2,1),(2,2)])
+
+
+    agent_actions = ['Left', 'Right', 'Suck','Up','Down']
+    
+    
+
+Problem 1(d)
+
+Source code (in agents.py):
+
+class SimpleReflexAgent(Agent):
+
+   def __init__(self,actions):
+      self.actions=actions
+
+   def program(self, percept):
+      action = {'Dirty' : self.actions[2],
+                (0,0) : self.actions[1],
+                (1,0) : self.actions[1],
+                (2,0) : self.actions[3],
+                (0,1) : self.actions[1],
+                (1,1) : self.actions[4],
+                (2,1) : self.actions[3],
+                (0,2) : self.actions[4],
+                (1,2) : self.actions[0],
+                (2,2) : self.actions[0]}
+
+      if percept[1]=='Dirty':
+         action=action[percept[1]]
+         print "Percept: %s Action: %s" % (percept, action)
+         return action
+      else:
+         action=action[percept[0]]
+         print "Percept: %s Action: %s" % (percept, action)
+         return action
+
+      return action[percept[0]]
+
+
+Problem 1(e)
+
+Source code (in agents.py):
+
+class ModelReflexAgent(Agent):
+		
+	def __init__(self,actions):
+		self.actions=actions
+		rooms ={(0,0):'Unknown',
+			(0,1):'Unknown',
+			(0,2):'Unknown',
+			(1,0):'Unknown',
+			(1,1):'Unknown',
+			(1,2):'Unknown',
+			(2,0):'Unknown',
+			(2,1):'Unknown',
+			(2,2):'Unknown'}
+		self.rooms=rooms
+		self.flag=0
+
+	def program(self,percept):
+
+		val=percept[0]
+		x=val[0]
+		y=val[1]
+
+		if cmp(val,(1,1))==0:
+			self.flag=1
+		
+		if self.flag==0:		
+			if x>1:
+				action='Left'
+				print "Percept: %s Action: %s" % (percept, action)
+				return action
+			if y>1:
+				action='Down'
+				print "Percept: %s Action: %s" % (percept, action)
+				return action
+			if x<1:
+				action='Right'
+				print "Percept: %s Action: %s" % (percept, action)
+				return action
+			if y<1:
+				action='Up'
+				print "Percept: %s Action: %s" % (percept, action)
+				return action
+
+		if percept[1]=='Dirty':
+			action=self.actions[2]
+			self.rooms[percept[0]]='Clean'
+			print "Percept: %s Action: %s" % (percept, action)
+			return action
+		else:
+			if x<2:
+				if self.rooms[(x+1,y)]!='Clean':
+					action='Right'
+					self.rooms[percept[0]]='Clean'
+					print "Percept: %s Action: %s" % (percept, action)
+					return action
+			if y<2:
+				if self.rooms[(x,y+1)]!='Clean':
+					action='Up'
+					self.rooms[percept[0]]='Clean'
+					print "Percept: %s Action: %s" % (percept, action)
+					return action
+			if x>0:
+				if self.rooms[(x-1,y)]!='Clean':
+					action='Left'
+					self.rooms[percept[0]]='Clean'
+					print "Percept: %s Action: %s" % (percept, action)
+					return action
+			if y>0:
+				if self.rooms[(x,y-1)]!='Clean':
+					action='Down'
+					self.rooms[percept[0]]='Clean'
+					print "Percept: %s Action: %s" % (percept, action)
+					return action
+
+Problem 1(f)
+
+Simple Reflex Agent
+Initial room config:  {(0, 1): 'Clean', (1, 2): 'Dirty', (0, 0): 'Dirty', (2, 0): 'Clean', (1, 0): 'Clean', (2, 2): 'Clean', (0, 2): 'Clean', (2, 1): 'Dirty', (1, 1): 'Clean'}
+Percept: ((1, 0), 'Clean') Action: Right
+Percept: ((2, 0), 'Clean') Action: Up
+Percept: ((2, 1), 'Dirty') Action: Suck
+Percept: ((2, 1), 'Clean') Action: Up
+Percept: ((2, 2), 'Clean') Action: Left
+Percept: ((1, 2), 'Dirty') Action: Suck
+Percept: ((1, 2), 'Clean') Action: Left
+Percept: ((0, 2), 'Clean') Action: Down
+Percept: ((0, 1), 'Clean') Action: Right
+Percept: ((1, 1), 'Clean') Action: Down
+Percept: ((1, 0), 'Clean') Action: Right
+Percept: ((2, 0), 'Clean') Action: Up
+Percept: ((2, 1), 'Clean') Action: Up
+Percept: ((2, 2), 'Clean') Action: Left
+Percept: ((1, 2), 'Clean') Action: Left
+Percept: ((0, 2), 'Clean') Action: Down
+Percept: ((0, 1), 'Clean') Action: Right
+Percept: ((1, 1), 'Clean') Action: Down
+Percept: ((1, 0), 'Clean') Action: Right
+Percept: ((2, 0), 'Clean') Action: Up
+Final room config:  {(0, 1): 'Clean', (1, 2): 'Clean', (0, 0): 'Dirty', (2, 0): 'Clean', (1, 0): 'Clean', (2, 2): 'Clean', (0, 2): 'Clean', (2, 1): 'Clean', (1, 1): 'Clean'}
+
+Model Reflex Agent
+Initial room config:  {(0, 1): 'Dirty', (1, 2): 'Dirty', (0, 0): 'Clean', (2, 0): 'Dirty', (1, 0): 'Clean', (2, 2): 'Dirty', (0, 2): 'Dirty', (2, 1): 'Clean', (1, 1): 'Dirty'}
+Percept: ((2, 2), 'Dirty') Action: Left
+Percept: ((1, 2), 'Dirty') Action: Down
+Percept: ((1, 1), 'Dirty') Action: Suck
+Percept: ((1, 1), 'Clean') Action: Right
+Percept: ((2, 1), 'Clean') Action: Up
+Percept: ((2, 2), 'Dirty') Action: Suck
+Percept: ((2, 2), 'Clean') Action: Left
+Percept: ((1, 2), 'Dirty') Action: Suck
+Percept: ((1, 2), 'Clean') Action: Left
+Percept: ((0, 2), 'Dirty') Action: Suck
+Percept: ((0, 2), 'Clean') Action: Down
+Percept: ((0, 1), 'Dirty') Action: Suck
+Percept: ((0, 1), 'Clean') Action: Down
+Percept: ((0, 0), 'Clean') Action: Right
+Percept: ((1, 0), 'Clean') Action: Right
+Percept: ((2, 0), 'Dirty') Action: Suck
+Completed cleaning
+Completed cleaning
+Completed cleaning
+Completed cleaning
+Final room config:  {(0, 1): 'Clean', (1, 2): 'Clean', (0, 0): 'Clean', (2, 0): 'Clean', (1, 0): 'Clean', (2, 2): 'Clean', (0, 2): 'Clean', (2, 1): 'Clean', (1, 1): 'Clean'}
+
+Problem 2(a)
+
+The Simple Reflex Agent is guaranteed to clean 8/9 of the rooms.  
+The (0,0) room is not pointed to by any other rooms in the dictionary, 
+so if it is dirty and the agent does not start there, it will be missed.  
+I could not think of a way to work around this without having some 
+kind of interpretation of state, but for 8/9, it is efficient.  
+To guarantee that this agent would completely clean all rooms,
+its start location would need to always be (0,0).
+
+The Model Reflex Agent is guaranteed to clean all of the rooms.
+This agent moves itself to the middle, (1,1), and then procedurally moves
+from room to room and cleans/designates them as clean in the dictionary,
+covering each room once with relatively high efficiency.  It takes at most
+2 turns to move itself to (1,1), after which it would take a maximum of 17 turns
+to clean all the rooms, for a total of 19 turns to clean the whole grid, 
+assuming all the rooms are dirty.  There are definitely ways this agent
+could be improved for larger grids, but for 3x3, it is pretty efficient.
+
+Problem 2(b)
+
+The Model Reflex Agent is not guaranteed to be efficient. I'm assuming it would
+be breaking the rules to copy a mapping of which rooms are dirty into a dictionary
+for the agent to use each round, so the agent cannot know which rooms are dirty
+until its percept call returns a value (either 'Dirty' or 'Clean').  As such,
+it can only know if all the rooms are dirty or not after it has traversed each room,
+As it is NOT omniscient of its environment, and therefore cannot directly go to each
+dirty room, skipping the rest.  That said,  The Model Reflex Agent is as efficient as
+its limitations allow it to be.
+
+To build a more efficient agent, I would copy the Initial Room Config dictionary
+into a dictionary that my agent could use, and then map an efficient route through the dirty rooms.
+This would at least improve upon the Model Reflex Agent.
+
+Problem 2(c)
+
+In the case of another agent "dirtying" rooms on the grid,  I would design the ModelBasedAgent
+to go to either (0,0) or (2,2) (one of the corners), and then patrol up and down each column,
+cleaning, and, when it reached the opposite corner, switching, and coming back. However,
+this would still not be a better strategy than visiting all rooms in the least steps.  Because
+my agent doesn't have a way of sensing the other agent's location, I can't follow it and clean up
+after it, and since my agent's internal model no longer accurately reflects the current state of rooms
+i've already visited, I have no choice but to repeatedly visit the rooms and re-check them perpetually.
+
+
+Problem 3
+
+Robot soccer player - Environment - Real World:
+		Partially Observable - grasping the complete state of the real world is not possible,
+		as it would require omniscience
+		Multi-Agent - I'm assuming there's more than one player, robot or otherwise.
+		Stochastic - The environment would be rapidly changing around the agent, due to
+		other players, and infinite possible real world variables.
+		Sequential - every choice would depend on previous movements, locations of other players,
+		and the intended goal.
+		Dynamic - Obviously, for many of the same reasons that the environment is stochastic.
+		Continuous - Real world environment, so potentially infinite percepts and possible actions.
+		Known - saying that every aspect of real world physics is known would be a stretch, but I'll
+		say that as far as playing soccer is concerned, we're probably pretty well covered.
+
+Internet book-shopping agent - Environment - Internet
+		Partially Observable - assuming we're not locked to a single site or database and can
+		freely navigate between multiple websites, we probably can't observe them all at once.
+		Single-Agent - There may be other book-shopping agents, but they are most likely not 
+		interacting or interfering with our environment in any meaningful way.
+		Deterministic - For the sake of argument, it is possible that something might happen
+		to the internet connection that interferes with the agent's environment, but barring
+		external events,  Each state of the environment should be determined by the agent's action
+		(I.E Search, Buy)
+		Sequential - The agent has to execute a sequence of actions to get from finding a book
+		to buying it.  Each change in the environment corresponds to an action in the sequence.
+		Static - It could be argued that the environment might change while the agent is thinking,
+		but it would fall into the territory of random events (such as internet disconnecting).
+		Discrete - The number of possible percepts might be large, due to the varying layouts of 
+		various websites and booksellers, but it is still finite, and most likely could be mapped to
+		relatively few actions.
+		Known - Assuming the agent is designed properly, it should be operating in an environment that
+		has predictable rules.
+		
+Autonomous Mars rover - Environment - Mars
+		Partially Observable - You're on Mars, a planet.  You can't see all of it.
+		Single-Agent - You're alone up there.  OR ARE YOU??  Yes, you are.
+		Stochastic - Things can happen on Mars that are not in your control (albeit unlikely), 
+		therefore your environment state could possibly change outside of your actions, or
+		despite them.
+		Sequential - I'm there there are some Episodic functions being performed as well, but
+		at least for the Mars rover's movement and data collection, it is a sequence of actions
+		designed to influence the environment.
+		Dynamic - Even if nothing happens while the Mars Rover is thinking, Mars itself is revolving whilst
+		orbiting the Sun, which would constantly, if imperceptibly, alter the environment.  If we ignore that
+		facet, then the environment could plausibly be considered Static.
+		Continuous - There may be a limited number of actions, but there are definitely an infinite number of percepts.
+		Unknown - I'm sure the Mars rover is taking it's own metrics as it makes its way around Mars,
+		but our knowledge of conditions on Mars before then was based on calculations, and wouldn't necessarily be
+		considered "known".
+		
+Mathematical theorem-proving assistant - Environment - Some Software Platform
+		Fully Observable - Assuming your environment is a theorem, and the interface to calculate it
+		with a certain set of values.
+		Single-Agent - Assuming there aren't multiple assistants proving several pieces of the theorem.
+		Deterministic - The Environment presents a theorem, you perform actions, the Environment changes
+		in direct correlation with your actions.
+		Episodic - Assuming that this is something like Wolfram Alpha, where you plug in an equation
+		and the program reads it and calculates it, There probably isn't a need for sequential behavior.
+		Static - Assuming the equations don't mutate while we're not looking.
+		Discrete - There can be equations,series, and theorems that continue infinitely, but the syntax of
+		the actual environment would be limited, as would the actions of the agent.
+		Known - Well, the designers have to know and apply the principles of mathematics in order to design the agent,
+		but if its being used to prove a theorem that potentially disproves an established principle of mathematics,
+		then things might get weird.
+		
+
+
+

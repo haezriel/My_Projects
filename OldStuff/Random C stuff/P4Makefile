@@ -1,0 +1,7 @@
+CC=gcc
+CFLAGS=-g
+P4:	P4.c
+	$(CC) $(CFLAGS) -o P4 P4.c -lm
+clean:
+	rm P4
+

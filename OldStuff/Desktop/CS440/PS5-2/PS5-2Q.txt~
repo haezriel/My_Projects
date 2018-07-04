@@ -1,0 +1,192 @@
+"""
+	Michael Allen-Bond
+	CS440 Artificial Intelligence
+	Dr. Scott Wallace
+"""
+
+a)  This is worth 15 points, but all it involves is implementing something in ChooseAction.  So, here's my ChooseAction function, hopefully it works correctly:
+
+def ChooseAction(Q,n,i,x,y):			
+	seq=['left','right','up','down']  //This is just for the random.choice function
+	a=Q[(x,y,'left')]				//This just copies the U values out of the Q dictionary
+	b=Q[(x,y,'right')]
+	c=Q[(x,y,'up')]
+	d=Q[(x,y,'down')]
+	
+	if i<n/2:
+		if random.randint(0,9) < 3:		//So in range 0-9 (10 possibilities)  getting 0,1,or 2 will trigger a random choice.
+			action = random.choice(seq) //Which is probability .3
+		else:
+			if a ==max(a,b,c,d):		//Otherwise, we pick the choice with the best U value
+				action='left'			//I know this is clumsy coding, but I'm not great with python.
+			if b ==max(a,b,c,d):
+				action='right'
+			if c ==max(a,b,c,d):
+				action='up'
+			if d ==max(a,b,c,d):
+				action='down'
+	else:
+		if a ==max(a,b,c,d):			//for i > n/2, we just go straight for the best choice.
+			action='left'
+		if b ==max(a,b,c,d):
+			action='right'
+		if c ==max(a,b,c,d):
+			action='up'
+		if d ==max(a,b,c,d):
+			action='down'
+	return action						//return action, whatever it is.
+
+
+
+
+b) With n=400 iterarions performed (It should be noted that there were variations in frequencies per run, I'm just posting a single run):
+
+State(1,1): left Qvalue: 0.407120194324, left Frequency: 45
+State(1,1): right Qvalue: 0.163848289053, right Frequency: 41
+State(1,1): up Qvalue: 0.738054924383, up Frequency: 518
+State(1,1): down Qvalue: 0.455373783239, down Frequency: 47
+State(1,2): left Qvalue: 0.650849952025, left Frequency: 35
+State(1,2): right Qvalue: 0.529319165545, right Frequency: 33
+State(1,2): up Qvalue: 0.804359172082, up Frequency: 531
+State(1,2): down Qvalue: 0.613857082791, down Frequency: 40
+State(1,3): left Qvalue: 0.751882533474, left Frequency: 34
+State(1,3): right Qvalue: 0.854926390805, right Frequency: 510
+State(1,3): up Qvalue: 0.72334084421, up Frequency: 33
+State(1,3): down Qvalue: 0.670616969994, down Frequency: 31
+State(2,1): left Qvalue: 0.669754248629, left Frequency: 84
+State(2,1): right Qvalue: -0.0975552111241, right Frequency: 29
+State(2,1): up Qvalue: 0.0249151661441, up Frequency: 31
+State(2,1): down Qvalue: 0.0210402132629, down Frequency: 32
+State(2,3): left Qvalue: 0.753057974259, left Frequency: 25
+State(2,3): right Qvalue: 0.894664920942, right Frequency: 490
+State(2,3): up Qvalue: 0.739576073554, up Frequency: 24
+State(2,3): down Qvalue: 0.725470124043, down Frequency: 24
+State(3,1): left Qvalue: -0.09357696513, left Frequency: 21
+State(3,1): right Qvalue: -0.0940307781967, right Frequency: 26
+State(3,1): up Qvalue: 0.0375695881822, up Frequency: 28
+State(3,1): down Qvalue: -0.0946279580381, down Frequency: 24
+State(3,2): left Qvalue: -0.224861384978, left Frequency: 15
+State(3,2): right Qvalue: -0.542571224, right Frequency: 7
+State(3,2): up Qvalue: 0.379117184951, up Frequency: 25
+State(3,2): down Qvalue: -0.152065821275, down Frequency: 19
+State(3,3): left Qvalue: 0.661134096396, left Frequency: 19
+State(3,3): right Qvalue: 0.953460145611, right Frequency: 413
+State(3,3): up Qvalue: 0.686796839576, up Frequency: 15
+State(3,3): down Qvalue: 0.190857967514, down Frequency: 32
+State(4,1): left Qvalue: -0.0853804707837, left Frequency: 20
+State(4,1): right Qvalue: -0.0836372795148, right Frequency: 21
+State(4,1): up Qvalue: -0.416524170377, up Frequency: 11
+State(4,1): down Qvalue: -0.0870437915352, down Frequency: 21
+State(1,1): Highest Qvalue: 0.738054924383, Direction: up 
+State(1,2): Highest Qvalue: 0.804359172082, Direction: up 
+State(1,3): Highest Qvalue: 0.854926390805, Direction: right 
+State(2,1): Highest Qvalue: 0.669754248629, Direction: left 
+State(2,3): Highest Qvalue: 0.894664920942, Direction: right 
+State(3,1): Highest Qvalue: 0.0375695881822, Direction: up 
+State(3,2): Highest Qvalue: 0.379117184951, Direction: up 
+State(3,3): Highest Qvalue: 0.953460145611, Direction: right 
+State(4,1): Highest Qvalue: -0.0836372795148, Direction: right 
+
+Comments:
+The highest Qvalues and corresponding directions are similar to those from value/policy iteration, with a few differences, the major ones being (4,1) and (3,1), both of which have different directions and substantially different values from value iteration.  Either I did something wrong, or these are examples of what happens when everything goes wrong, probability-wise.
+
+c)Here's Qlearn run with n=2000.  I noticed (4,1) changes, (3,1) still wants to go up, however.  Would it eventually change to go left, I wonder?  Other than that, all the directions correspond with value/policy iteration.  Here's the output:
+
+State(1,1): left Qvalue: 0.6887407377, left Frequency: 175
+State(1,1): right Qvalue: 0.65180722692, right Frequency: 114
+State(1,1): up Qvalue: 0.755529746064, up Frequency: 2598
+State(1,1): down Qvalue: 0.695190144826, down Frequency: 163
+State(1,2): left Qvalue: 0.765219432833, left Frequency: 125
+State(1,2): right Qvalue: 0.766403720766, right Frequency: 134
+State(1,2): up Qvalue: 0.81179661893, up Frequency: 2526
+State(1,2): down Qvalue: 0.733065963016, down Frequency: 146
+State(1,3): left Qvalue: 0.818379816991, left Frequency: 125
+State(1,3): right Qvalue: 0.855914504717, right Frequency: 2561
+State(1,3): up Qvalue: 0.81685936457, up Frequency: 133
+State(1,3): down Qvalue: 0.788348054621, down Frequency: 129
+State(2,1): left Qvalue: 0.668954186183, left Frequency: 379
+State(2,1): right Qvalue: 0.282875390513, right Frequency: 40
+State(2,1): up Qvalue: 0.524876663193, up Frequency: 48
+State(2,1): down Qvalue: 0.513911348214, down Frequency: 49
+State(2,3): left Qvalue: 0.82042019361, left Frequency: 130
+State(2,3): right Qvalue: 0.910592605825, right Frequency: 2498
+State(2,3): up Qvalue: 0.861446291714, up Frequency: 126
+State(2,3): down Qvalue: 0.860061388356, down Frequency: 124
+State(3,1): left Qvalue: 0.0917667080767, left Frequency: 24
+State(3,1): right Qvalue: -0.0969914283285, right Frequency: 27
+State(3,1): up Qvalue: 0.516727746618, up Frequency: 76
+State(3,1): down Qvalue: 0.00808617414035, down Frequency: 27
+State(3,2): left Qvalue: 0.351196606298, left Frequency: 26
+State(3,2): right Qvalue: -0.825873222622, right Frequency: 15
+State(3,2): up Qvalue: 0.680467569366, up Frequency: 118
+State(3,2): down Qvalue: 0.0555954654293, down Frequency: 27
+State(3,3): left Qvalue: 0.868425158981, left Frequency: 117
+State(3,3): right Qvalue: 0.953923977827, right Frequency: 2148
+State(3,3): up Qvalue: 0.909027088939, up Frequency: 87
+State(3,3): down Qvalue: 0.66173538767, down Frequency: 102
+State(4,1): left Qvalue: 0.116810117228, left Frequency: 25
+State(4,1): right Qvalue: -0.0876372795148, right Frequency: 22
+State(4,1): up Qvalue: -0.381026570582, up Frequency: 12
+State(4,1): down Qvalue: -0.0870437915352, down Frequency: 21
+State(1,1): Highest Qvalue: 0.755529746064, Direction: up 
+State(1,2): Highest Qvalue: 0.81179661893, Direction: up 
+State(1,3): Highest Qvalue: 0.855914504717, Direction: right 
+State(2,1): Highest Qvalue: 0.668954186183, Direction: left 
+State(2,3): Highest Qvalue: 0.910592605825, Direction: right 
+State(3,1): Highest Qvalue: 0.516727746618, Direction: up 
+State(3,2): Highest Qvalue: 0.680467569366, Direction: up 
+State(3,3): Highest Qvalue: 0.953923977827, Direction: right 
+State(4,1): Highest Qvalue: 0.116810117228, Direction: left 
+
+
+
+d) Welp, I tried actually having (alpha) decay to 0 over time, and the main problem I saw is that if it degrades too quickly, Q[s,a] will no longer change based on new behaviors, as it will essentially be : Q[s,a]=Q[s,a] + 0*(nobody cares).  This means that if a bad choice happens to currently be the 'best' option, it will continually choose that option and loop over and over again (possibly running into a wall), until the much smaller probability 'random' movements alter its path.  This means that potentially you get infinitely looping bad choices, and your output looks wonky as hell, like this (notice the massive frequencies in certain directions, where it got stuck in a dead-end loop):
+ 
+State(1,1): left Qvalue: -4.74726927459e+19, left Frequency: 11249
+State(1,1): right Qvalue: -4.81368899471e+19, right Frequency: 1922
+State(1,1): up Qvalue: -4.74198928156e+19, up Frequency: 2936
+State(1,1): down Qvalue: -4.88910218344e+19, down Frequency: 15890
+State(1,2): left Qvalue: -37827.9182145, left Frequency: 433
+State(1,2): right Qvalue: -62701.5995033, right Frequency: 3663
+State(1,2): up Qvalue: -15444.4303382, up Frequency: 464
+State(1,2): down Qvalue: 3.09738660608e+19, down Frequency: 2737
+State(1,3): left Qvalue: -6.12091228829, left Frequency: 279
+State(1,3): right Qvalue: -3.09600406228, right Frequency: 273
+State(1,3): up Qvalue: 1.99920260974, up Frequency: 2735
+State(1,3): down Qvalue: -19019.1575976, down Frequency: 273
+State(2,1): left Qvalue: 571751.743607, left Frequency: 707
+State(2,1): right Qvalue: 104099.652827, right Frequency: 642
+State(2,1): up Qvalue: -759821.267845, up Frequency: 690
+State(2,1): down Qvalue: 1.62634141397e+20, down Frequency: 20857
+State(2,3): left Qvalue: -2.69448204742, left Frequency: 193
+State(2,3): right Qvalue: 1.15391304781, right Frequency: 196
+State(2,3): up Qvalue: 2.1730906579, up Frequency: 1937
+State(2,3): down Qvalue: -1.29348458114, down Frequency: 181
+State(3,1): left Qvalue: -5.8833209449e+18, left Frequency: 427
+State(3,1): right Qvalue: -4.72429706951e+18, right Frequency: 1534
+State(3,1): up Qvalue: -5.1917763682e+18, up Frequency: 1318
+State(3,1): down Qvalue: -4.75122707462e+18, down Frequency: 2882
+State(3,2): left Qvalue: -1488.16595886, left Frequency: 58
+State(3,2): right Qvalue: -224.868823635, right Frequency: 53
+State(3,2): up Qvalue: -282.63774768, up Frequency: 348
+State(3,2): down Qvalue: 8.03925426621e+17, down Frequency: 872
+State(3,3): left Qvalue: -2.33452135914, left Frequency: 182
+State(3,3): right Qvalue: -2.25863142557, right Frequency: 167
+State(3,3): up Qvalue: -2.28740505077, up Frequency: 802
+State(3,3): down Qvalue: -575.941058101, down Frequency: 178
+State(4,1): left Qvalue: 10308.9736727, left Frequency: 162
+State(4,1): right Qvalue: 2007.67093517, right Frequency: 88
+State(4,1): up Qvalue: 2.95497604022e+17, up Frequency: 1904
+State(4,1): down Qvalue: -1436.34961093, down Frequency: 90
+State(1,1): Highest Qvalue: -4.74198928156e+19, Direction: up 
+State(1,2): Highest Qvalue: 3.09738660608e+19, Direction: down 
+State(1,3): Highest Qvalue: 1.99920260974, Direction: up 
+State(2,1): Highest Qvalue: 1.62634141397e+20, Direction: down 
+State(2,3): Highest Qvalue: 2.1730906579, Direction: up 
+State(3,1): Highest Qvalue: -4.72429706951e+18, Direction: right 
+State(3,2): Highest Qvalue: 8.03925426621e+17, Direction: down 
+State(3,3): Highest Qvalue: -2.25863142557, Direction: right 
+State(4,1): Highest Qvalue: 2.95497604022e+17, Direction: up 
+
+
+Comments:  I did another run with alpha decaying much more slowly, and it ran pretty much normally, and gave normal output. Since alpha hitting 0 is similar to saying "I'm done updating that Q-value", I don't see much point to doing it if you already have a counter, like   i->n.

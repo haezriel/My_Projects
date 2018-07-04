@@ -1,0 +1,13 @@
+import javax.swing.JPanel;
+
+
+public class PA3Panel extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public PA3Panel() {
+
+	}
+
+}

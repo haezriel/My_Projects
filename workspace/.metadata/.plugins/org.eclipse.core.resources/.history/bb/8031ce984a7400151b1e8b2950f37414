@@ -1,0 +1,157 @@
+package gmbmd;
+
+import java.util.ArrayList;
+import jig.Entity;
+import jig.ResourceManager;
+import jig.Vector;
+
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Music;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
+
+/**
+ * A Simple Game of Bounce.
+ * 
+ * The game has three states: StartUp, Playing, and GameOver, the game
+ * progresses through these states based on the user's input and the events that
+ * occur. Each state is modestly different in terms of what is displayed and
+ * what input is accepted.
+ * 
+ * In the playing state, our game displays a moving rectangular "ball" that
+ * bounces off the sides of the game container. The ball can be controlled by
+ * input from the user.
+ * 
+ * When the ball bounces, it appears broken for a short time afterwards and an
+ * explosion animation is played at the impact site to add a bit of eye-candy
+ * additionally, we play a short explosion sound effect when the game is
+ * actively being played.
+ * 
+ * Our game also tracks the number of bounces and syncs the game update loop
+ * with the monitor's refresh rate.
+ * 
+ * Graphics resources courtesy of qubodup:
+ * http://opengameart.org/content/bomb-explosion-animation
+ * 
+ * Sound resources courtesy of DJ Chronos:
+ * http://www.freesound.org/people/DJ%20Chronos/sounds/123236/
+ * 
+ * 
+ * @author wallaces
+ * 
+ */
+public class GMBMDGame extends StateBasedGame {
+
+	public static final int STARTUPSTATE = 0;
+	public static final int PLAYINGSTATE = 1;
+	public static final int GAMEOVERSTATE = 2;
+
+	
+
+	public static final String GAMEOVER_BANNER_RSC = "gmbmd/resource/gameover.png";
+	public static final String STARTUP_BANNER_RSC = "gmbmd/resource/PressSpace.png";
+	public static final String BANG_EXPLOSIONIMG_RSC = "gmbmd/resource/explosion.png";
+	public static final String BANG_EXPLOSIONSND_RSC = "gmbmd/resource/explosion.wav";
+	public static final String BLOCK1_BLOCK_RSC = "gmbmd/resource/block.png";
+	public static final String PADDLE_PADDLEIMG_RSC = "gmbmd/resource/paddle.png";
+	public static final String VICTORY_BANNER_RSC = "gmbmd/resource/victory.png";
+	public static final String BRICK4_BRICK4IMG_RSC = "gmbmd/resource/brick4.png";
+	public static final String BRICK4_BRICK42IMG_RSC = "gmbmd/resource/brick4-2.png";
+	public static final String BALL_BALL2IMG_RSC = "gmbmd/resource/ball2.png";
+	public static final String TOPWALL_RSC = "gmbmd/resource/topwall.png";
+	public static final String GROUND_GROUND1_RSC = "gmbmd/resource/ground1.png";
+	public static final String BOTTOMWALL_RSC = "gmbmd/resource/bottomwall.png";
+	public static final String SWING1_RSC = "gmbmd/resource/swingarc.png";
+	public static final String SWING2_RSC = "gmbmd/resource/swingarcleft.png";
+	public static final String SWING3_RSC = "gmbmd/resource/swingarcup.png";
+	public static final String SWING4_RSC = "gmbmd/resource/swingarcdown.png";
+	public final int ScreenWidth;
+	public final int ScreenHeight;
+	public int state;
+	Map level;
+	Player player = null;
+	ArrayList<Bang> explosions;
+	Weapon blader,bladel,bladeu,bladed,blade;
+	Weapon spellr,spelll,spellu,spelld;
+	Music mainMusic;
+
+
+	/**
+	 * Create the BounceGame frame, saving the width and height for later use.
+	 * 
+	 * @param title
+	 *            the window's title
+	 * @param width
+	 *            the window's width
+	 * @param height
+	 *            the window's height
+	 */
+	public GMBMDGame(String title, int width, int height) {
+		super(title);
+		ScreenHeight = height;
+		ScreenWidth = width;
+	//	state = 0;
+		Entity.setDebug(true);
+		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
+	//	explosions = new ArrayList<Bang>(50);
+	}
+
+	@Override
+	public void initStatesList(GameContainer container) throws SlickException {
+		addState(new StartUpState());
+		addState(new GameOverState());
+		addState(new PlayingState());
+		
+		ResourceManager.loadSound(BANG_EXPLOSIONSND_RSC);
+
+		// preload all the resources to avoid warnings & minimize latency...
+		ResourceManager.loadImage(BLOCK1_BLOCK_RSC);
+		ResourceManager.loadImage(GROUND_GROUND1_RSC);
+		ResourceManager.loadImage(PADDLE_PADDLEIMG_RSC);
+		ResourceManager.loadImage(TOPWALL_RSC);
+		ResourceManager.loadImage(BOTTOMWALL_RSC);
+		ResourceManager.loadImage(SWING1_RSC);
+		ResourceManager.loadImage(SWING2_RSC);
+		ResourceManager.loadImage(SWING3_RSC);
+		ResourceManager.loadImage(SWING4_RSC);
+		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
+		ResourceManager.loadImage(STARTUP_BANNER_RSC);
+		ResourceManager.loadImage(BANG_EXPLOSIONIMG_RSC);
+		ResourceManager.loadImage(VICTORY_BANNER_RSC);
+		ResourceManager.loadImage(BRICK4_BRICK4IMG_RSC);
+		ResourceManager.loadImage(BRICK4_BRICK42IMG_RSC);
+		ResourceManager.loadImage(BALL_BALL2IMG_RSC);
+		
+
+		level= new Map(ScreenWidth,ScreenHeight,1);
+		player = new Player(ScreenWidth/2,ScreenHeight/2+100,0,0,1);
+		blader= new Weapon (player.getX()+50, player.getY(),1);
+		bladel= new Weapon (player.getX()-50,player.getY(),2);
+		bladeu = new Weapon(player.getX(),player.getY()-50,3);
+		bladed = new Weapon(player.getX(),player.getY()+50,4);
+		blade=blader;
+		
+
+
+	}
+
+	public void rebrick() {
+
+
+	}
+
+	public static void main(String[] args) {
+		AppGameContainer app;
+		try {
+			app = new AppGameContainer(new GMBMDGame("Breakout!", 1300, 700));
+			app.setDisplayMode(1300, 700, false);
+			app.setVSync(true);
+			app.start();
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}

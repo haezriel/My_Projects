@@ -1,0 +1,7 @@
+CC=gcc
+CFLAGS=-g -std=c99 -pedantic -Wall
+
+main: sort sort.c sort.h
+	$(CC) $(CFLAGS) -o sort sort.c -lm -pthread
+clean:
+	rm sort

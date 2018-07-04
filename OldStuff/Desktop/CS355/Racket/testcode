@@ -1,0 +1,4 @@
+#lang racket
+
+(define mreverse (lambda (L)
+                  (cons(mreverse (cdr L)) (car L))))

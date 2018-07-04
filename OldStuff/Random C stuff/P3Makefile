@@ -1,0 +1,8 @@
+CC=gcc
+CFLAGS=-g
+
+P3:	P3.c
+	$(CC) $(CFLAGS) -o P3 P3.c
+clean:
+	rm P3
+

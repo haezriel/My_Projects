@@ -1,0 +1,37 @@
+Michael Allen-Bond
+WSU ID: 011386199
+Email: michael.allen-bond@wsu.edu
+CS427
+03/30/2016
+Dr. Mocas
+
+Project 2: Public Key Cryptosystem
+
+README:
+
+
+This a public key cryptosystem, using a private and public key pair to encrypt/decrypt a document.
+
+
+
+Archive Contents:
+	main.c
+	ctext.txt
+	dtext.txt
+	prikey.txt
+	ptext.txt
+	pubkey.txt
+	Makefile
+	README
+
+
+TO COMPILE:
+
+>make
+
+TO RUN (assuming you have plaintext.txt and key.txt in your directory):
+>./main
+
+To generate a key, enter <k>
+To encrypt, enter <e>
+To decrypt, enter <d>

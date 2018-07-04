@@ -1,0 +1,23 @@
+git checkout -b develop 
+(creates a new branch, develop, if it doesn't exist)
+
+git branch
+(shows the current branch)
+
+git status
+(shows git status)
+
+gitk --all
+(graph of git)
+
+git develop --help
+
+git branch -d <name>
+(deletes (empty) branch <name>)
+
+git add Issues.txt
+(adds Issues.txt to index)
+
+git commit -m "create a short todo list"
+(commits with message "create a short todo list")
+

@@ -1,0 +1,113 @@
+Polygon Triangulation by Ear Clipping
+Michael Allen-Bond
+michael.allen-bond@wsu.edu
+CS442
+Dr. Cochran
+09/18/15
+
+Archive Contents:
+
+README
+test.json
+PolygonTriangulate.js
+triangles.json
+
+
+
+Program Description:
+
+This script will take in a set of vertices for a polygon, and then will output the appropriate triangulation for the polygon.  To use this, All you need is a .json file containing a set of vertices with the format:
+
+{
+    "verts" : [{"x" : 360.0, "y" : 333.0},
+               {"x" : 216.0, "y" : 216.0},
+               {"x" : 216.0, "y" : 288.0},
+               {"x" : 144.0, "y" : 144.0},
+               {"x" : 288.0, "y" : 216.0},
+               {"x" : 288.0, "y" : 144.0},
+               {"x" : 216.0, "y" : 108.0},
+               {"x" : 369.0, "y" : 90.0},
+               {"x" : 432.0, "y" : 243.0},
+               {"x" : 333.0, "y" : 144.0}]}
+
+Where each (x,y) point corresponds to a vertex in the polygon.  This program will calculate the area of the polygon and then use ear-clipping to triangulate the polygon.  The vertices and the triangulated polygon is then output in the format: 
+{
+    "verts": [
+        {
+            "x": 360,
+            "y": 333
+        },
+        {
+            "x": 216,
+            "y": 216
+        },
+        {
+            "x": 216,
+            "y": 288
+        },
+        {
+            "x": 144,
+            "y": 144
+        },
+        {
+            "x": 288,
+            "y": 216
+        },
+        {
+            "x": 288,
+            "y": 144
+        },
+        {
+            "x": 216,
+            "y": 108
+        },
+        {
+            "x": 369,
+            "y": 90
+        },
+        {
+            "x": 432,
+            "y": 243
+        },
+        {
+            "x": 333,
+            "y": 144
+        }
+    ],
+    "triangles": [
+        7,
+        8,
+        9,
+        6,
+        7,
+        9,
+        5,
+        6,
+        9,
+        1,
+        2,
+        3,
+        1,
+        3,
+        4,
+        5,
+        9,
+        0,
+        0,
+        1,
+        4,
+        0,
+        4,
+        5
+    ]
+}
+
+To run this program using Node, create a json file with polygon vertices in it formatted like the above example (ex. test.json), and then type:
+
+node PolygonTriangulate.js < test.json 
+
+This will output the triangles to the console.  To output to a file, type:
+
+node PolygonTriangulate.js < test.json >triangles.json
+
+This will output the triangles to the json file.

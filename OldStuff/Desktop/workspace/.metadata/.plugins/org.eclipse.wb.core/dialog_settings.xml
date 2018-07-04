@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.wb.internal.core.model.util.factory.FactoryCreateAction$FactoryCreateDialog">
+		<item value="176" key="x"/>
+		<item value="1080" key="width"/>
+		<item value="24" key="y"/>
+		<item value="744" key="height"/>
+	</section>
+	<section name="org.eclipse.wb.internal.core.model.property.order.ReorderDialog">
+		<item value="568" key="width"/>
+		<item value="432" key="x"/>
+		<item value="220" key="y"/>
+		<item value="380" key="height"/>
+	</section>
+	<section name="org.eclipse.wb.internal.core.editor.actions.assistant.LayoutAssistantWindow">
+		<item value="683" key="x"/>
+		<item value="364" key="y"/>
+	</section>
+	<section name="org.eclipse.wb.internal.core.model.property.editor.string.StringPropertyDialog">
+		<item value="589" key="width"/>
+		<item value="422" key="x"/>
+		<item value="219" key="y"/>
+		<item value="382" key="height"/>
+	</section>
+</section>

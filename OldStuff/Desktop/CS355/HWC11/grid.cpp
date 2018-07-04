@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+
+#ifdef CHARGRID1
+#include "CharGrid1.h"
+typedef CharGrid1 CharGrid;
+#else
+#include "CharGrid2.h"
+typedef CharGrid2 CharGrid;
+#endif
+
+using namespace std;
+
+ostream& operator<<(ostream& os, const CharGrid& grid) {
+  for (int r = 0; r < grid.height(); r++) {
+    for (int c = 0; c < grid.height(); c++) {
+      os << " " << grid[r][c];
+    }
+    os << endl;
+  }
+  return os;
+}
+
+void fillBorder(CharGrid& grid, char ch) {
+  const int w = grid.width();
+  const int h = grid.height();
+  for (int c = 0; c < w; c++)
+    grid[0][c] = grid[h-1][c] = ch;
+  for (int r = 1; r < h-1; r++)
+    grid[r][0] = grid[r][w-1] = ch;
+}
+
+void fillWordAcross(CharGrid& grid, int r, int c, const string& word)  {
+  for (int i = 0; i < word.length(); i++)
+    grid[r][c+i] = word[i];
+}
+
+void fillWordDown(CharGrid& grid, int r, int c, const string& word)  {
+  for (int i = 0; i < word.length(); i++)
+    grid[r+i][c] = word[i];
+}
+
+int main() {
+
+  CharGrid grid(8,8,' ');
+  fillBorder(grid, '*');
+  fillWordAcross(grid, 3, 2, "ADT");
+  fillWordDown(grid, 2, 2, "RAII");
+  fillWordDown(grid, 1, 4, "AUTO");
+  cout << grid;
+  return 0;
+}

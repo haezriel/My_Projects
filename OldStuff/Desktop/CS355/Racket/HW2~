@@ -1,0 +1,39 @@
+#lang racket
+(define state '((A #t) (B #f) (C #t) (D #t)))
+(define clause '(A (NOT B) C))
+(define clauses '((A (not B) C) (A (not B) (not C)) (A (not B) D)))
+  
+(define eval-var (lambda (var state) (
+                                      if (empty? state) (list)
+                                      (if (member var (car state)) (car(cdr(car state)))
+                                      (eval-var var (cdr state))))))
+(eval-var 'A state)
+
+
+(define eval-clause (lambda (clause state) (
+                                            if (empty? clause) #t
+                                            (if (equal? (eval-var (car clause) state) #t) (eval-clause (cdr clause) state)
+                                            (if (equal? (eval-var (car clause) state) (list)) (eval-clause (cdr clause) state)
+                                            #f)))))
+
+(eval-clause clause state)
+
+(define get-vars (lambda (clause) (
+                                   if (empty? clause) (list)
+                                   (if (list?(car clause)) (flatten(cons (cdr(car clause)) (get-vars (cdr clause))))
+                                   (cons (car clause) (get-vars (cdr clause)))))))
+(get-vars '(A (NOT B) C))
+
+(define get-all-vars (lambda (clauses) (
+                                        if (empty? clauses) (list)
+                                        (remove-duplicates(flatten (cons (get-vars(car clauses)) (get-all-vars(cdr clauses))))))))
+
+(get-all-vars clauses)
+
+;(define unsat-clauses (lambda (clauses state) ()))
+
+;(define flip-var (lambda (var state) ()))
+
+;(define get-better-neighbor (lambda (clauses state vars num-unsat) ()))
+
+;(define simple-hill-climb (lambda (clauses state dist unsat) ()))

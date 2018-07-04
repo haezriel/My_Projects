@@ -1,0 +1,23 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+
+public class PA3Panel extends JPanel {
+	
+	int lastX=0,lastY=0;
+    boolean init=true;
+	/**
+	 * Create the panel.
+	 */
+	public PA3Panel() {
+	}
+	public void paint(Graphics g) // override default paint() method
+	{
+	     g.setColor(new Color(255,255,255));
+	     g.fillRect(0,0,getWidth(),getHeight());
+	     g.setColor(new Color(255,0,0));
+	     g.drawOval(lastX,lastY,100,100);
+	   }
+}

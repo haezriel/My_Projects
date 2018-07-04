@@ -1,0 +1,204 @@
+#lang racket
+; Michael Allen-Bond
+; michael.allen-bond@email.wsu.edu
+; CS 355
+; Dr. Dang
+;Assignment 2
+
+;This program, written in Scheme, the worst programming language to ever bastardize the face of this planet,
+;is designed to solve 3-SAT problems via hill-climbing.
+;Each function is commented.
+
+(define clauses1 '((F (NOT B) E) (C (NOT D) E) ((NOT G) F (NOT B)) (D C (NOT A)) (D F B)
+   (D (NOT I) (NOT E)) ((NOT H) E I) ((NOT G) F I) (C F (NOT H)) (J G (NOT A))
+   ((NOT H) E (NOT A)) (A (NOT F) E) ((NOT G) (NOT E) B) (E (NOT D) (NOT I))
+   ((NOT G) I E) ((NOT G) (NOT B) E) (J D (NOT F)) (F (NOT H) E) (D (NOT H) E)
+   ((NOT H) (NOT B) C) ((NOT E) I (NOT D)) (B (NOT F) (NOT A)) (E (NOT I) J)
+   (E (NOT A) I) (D (NOT F) (NOT H)) (A H D) ((NOT D) G (NOT J)) (F D (NOT A))
+   (C D F) ((NOT A) (NOT H) E)) )
+
+(define clauses2 '((J (NOT C) D) (D (NOT G) (NOT H)) ((NOT D) (NOT E) (NOT G)) (F (NOT J) C)
+   (D (NOT H) C) ((NOT G) C F) (A (NOT I) (NOT B)) ((NOT J) (NOT D) E) (H A C)
+   (A C B) ((NOT B) I C) ((NOT J) (NOT G) (NOT B)) ((NOT H) A (NOT C))
+   (F (NOT A) C) ((NOT H) G I) (F (NOT B) E) ((NOT C) (NOT B) I)
+   ((NOT I) F (NOT D)) (B (NOT G) C) (J (NOT C) (NOT H)) (C F (NOT D))
+   ((NOT J) (NOT D) (NOT C)) ((NOT J) E C) (E (NOT I) D) (C (NOT D) (NOT J))
+   ((NOT G) F I) ((NOT D) B I) (B (NOT H) J) ((NOT G) (NOT D) B) ((NOT H) F I)
+   (I F C) ((NOT A) D F) ((NOT D) (NOT F) (NOT J)) ((NOT J) I (NOT A))
+   ((NOT E) (NOT H) I) (H (NOT B) J) (E F C) ((NOT D) E J) ((NOT A) J (NOT F))
+   ((NOT D) (NOT H) (NOT F)) ((NOT B) H (NOT I)) (D (NOT H) C)
+   ((NOT J) (NOT I) H) (J G F) (A G (NOT J)) (J (NOT D) (NOT H))
+   ((NOT J) (NOT C) D) (I D E) ((NOT E) (NOT B) (NOT I)) (G D A)))
+
+(define clauses3 '(((NOT I) (NOT H) (NOT F)) ((NOT B) E (NOT G)) (H (NOT C) E)
+   ((NOT G) (NOT E) (NOT I)) ((NOT A) C (NOT J)) ((NOT G) (NOT A) H)
+   ((NOT I) F (NOT H)) (I (NOT A) (NOT E)) ((NOT E) I J) (I (NOT J) (NOT A))
+   (D I E) ((NOT B) C A) ((NOT G) E I) ((NOT G) (NOT A) F) ((NOT B) A (NOT I))
+   ((NOT G) J E) (D (NOT G) C) (G (NOT B) (NOT C)) ((NOT H) F (NOT J)) (C D F)
+   (B (NOT G) (NOT E)) (A (NOT D) I) (C A H) (F (NOT B) (NOT A))
+   ((NOT J) (NOT F) (NOT D)) ((NOT A) E (NOT J)) ((NOT I) (NOT G) (NOT C))
+   (J A C) (H (NOT G) (NOT E)) ((NOT H) (NOT I) (NOT E)) ((NOT H) D (NOT B))
+   ((NOT D) E (NOT I)) (I (NOT G) C) (F (NOT G) (NOT A)) (G I E)
+   (E (NOT B) (NOT G)) ((NOT C) (NOT I) D) ((NOT G) (NOT B) (NOT H))
+   (D (NOT I) B) (H I A) ((NOT H) (NOT G) (NOT A)) ((NOT G) (NOT B) F)
+   (E (NOT G) (NOT A)) (I (NOT H) (NOT A)) ((NOT J) E C) ((NOT B) (NOT A) F)
+   (G J (NOT A)) ((NOT F) A D) (C D H) (F H E) (E J A) (J A F)
+   ((NOT J) (NOT B) (NOT A)) (E A (NOT J)) ((NOT I) (NOT G) (NOT C))
+   (I (NOT E) G) (I (NOT A) D) ((NOT F) E (NOT J)) ((NOT H) I D)
+   (F (NOT B) (NOT H)) (E (NOT H) C) ((NOT F) (NOT D) I) (H (NOT J) (NOT D))
+   (G (NOT A) (NOT F)) ((NOT E) C J) ((NOT C) E (NOT F)) (D (NOT E) (NOT F))
+   ((NOT H) (NOT A) F) (F E (NOT G)) (D F (NOT J)) ((NOT A) (NOT J) (NOT I))
+   (J (NOT F) (NOT H)) ((NOT I) (NOT H) J) (C G (NOT E)) (I C F) (I (NOT F) J)
+   (A (NOT H) (NOT E)) (C (NOT A) (NOT H)) (D (NOT F) (NOT A))
+   ((NOT E) (NOT G) I)))
+
+(define state '((A #f) (B #t) (C #t) (D #f) (E #t) (F #f) (G #f) (H #t) (I #f) (J #t)))
+(define clause '(A B C))
+
+;All functions defined below 
+;______________________________________________________________________________________________________________________
+
+
+;Eval-var function
+;This function takes in a variable and the state (defined), returning the boolean value of that variable.
+;if there is no state, an empty list is returned. Otherwise, it searches for the variable in the state,
+;and then returns the second value (boolean) of the list the variable is in.
+(define eval-var (lambda (var state) (
+                                      if (not (list? state)) (list)
+                                      (if (member var (car state)) (car(cdr(car state)))
+                                      (eval-var var (cdr state))))))
+
+
+
+
+;(eval-var 'A state)
+
+
+
+;Eval-clause function
+;This function evaluates the boolean value of a clause, essentially by evaluating each variable in the clause,
+;and if any of them are true, it returns true. otherwise, it returns false.
+(define eval-clause (lambda (clause state) (
+                                            if (empty? clause) #f
+                                               (if (list? (car clause)) 
+                                                   (if (equal? (eval-clause (cdr (car clause)) state) #f) #t
+                                                       (eval-clause (cdr clause) state))
+                                                   (if (equal? (eval-var (car clause) state) #t) #t
+                                                       (eval-clause (cdr clause) state))))))
+
+
+
+
+;(eval-clause clause state)
+
+
+
+;Get-vars function
+;This function gets variables out of a single clause by checking for sub-lists (like (NOT B)), and then
+;creating a flattened list out of either the second values in a sub-list (B) or the first values in the list,
+;recursively.
+(define get-vars (lambda (clause) (
+                                   if (empty? clause) (list)
+                                   (if (list?(car clause)) (flatten(cons (cdr(car clause)) (get-vars (cdr clause))))
+                                   (cons (car clause) (get-vars (cdr clause)))))))
+
+
+
+;(get-vars '(A (NOT B) C))
+
+
+
+;Get-all-vars function
+;This function gets all variables out of  a list of clauses, essentially by recursively feeding each sub-clause
+;into get-vars, and then concatenating those with the rest of the output.
+(define get-all-vars (lambda (clauses) (
+                                        if (empty? clauses) (list)
+                                        (remove-duplicates(flatten (cons (get-vars(car clauses)) (get-all-vars(cdr clauses))))))))
+
+
+
+
+;(get-all-vars clauses1)
+
+
+
+;Unsat-clauses function
+;This function checks for unsatisfied clauses by evaluating each clause in the list with eval-clause, and if true,
+;removing from the list (cdr), or if false, re-linking to the output (cons (car output) (cdr recursive-call)).
+(define unsat-clauses (lambda (clauses state) (
+                                              if (empty? clauses) (list)
+                                              (if (list? (car clauses))
+                                                  (if (equal? (eval-clause (car clauses) state) #t) (unsat-clauses (cdr clauses) state)
+                                                      (cons (car clauses) (unsat-clauses (cdr clauses) state)))
+                                                  (list)))))
+                                               
+
+
+
+;(unsat-clauses clauses1 state)
+
+
+
+;Flip-var function
+;This function flips the boolean value of a variable by first using eval-var to find and check it's value,
+;then, based on the value, recreates the sublist (within state) using the variable and the opposite boolean.
+;A tiny mistake in this function cost me  40 hours of my life, and made this assignment late.  
+;Scheme is a terrible language.
+(define flip-var (lambda (var state) (
+                                      if (empty? state) (list)
+                                      (if (equal? (car(car state)) var)
+                                          (if (equal? (eval-var var state) #t) (cons (flatten(cons (car(car state)) #f)) (cdr state))
+                                              (cons (flatten (cons (car(car state)) #t)) (cdr state)))
+                                          (cons (car state) (flip-var var (cdr state)))))))
+
+
+
+;state
+;(flip-var 'C state)
+
+
+
+;Get-better-neighbor function
+;This function takes in a list of variables that it flips, checks against the current unsat-clauses length,
+;and if better, returns that state.  If not, moves to the next variable in the list, and recursively tries again,
+;until list is empty.
+(define get-better-neighbor (lambda (clauses state vars num-unsat) (
+                            if (empty? vars) #f
+                               (if (< (length (unsat-clauses clauses (flip-var (car vars) state))) num-unsat)
+                                   (flip-var (car vars) state)
+                                   (get-better-neighbor clauses state (cdr vars) num-unsat)))))
+
+
+
+
+;state
+;(get-better-neighbor clauses2 state (get-all-vars clauses2) (length (unsat-clauses clauses2 state)))
+
+
+
+;Simple-hill-climb function
+;This function is the one that I wrote about 60 times, erased 59 times, and had right all along because 
+;my error was in a completely different function.  It's pretty simple now:
+;the function calls get-better-neighbor with each recursion.  If get-better-neighbor returns #f,
+;then there are no better neighbors (and we haven't reached 0 unsatisfied states), so
+;simple-hill-climb is called recursively with a random flip-var (essentially a random restart hill-climb search).
+;once unsat reaches 0, state is returned, and we have a solution.
+(define simple-hill-climb (lambda (clauses state dist unsat) (
+  if (empty? unsat) state
+     (if (> dist 0)
+         (if (equal? (get-better-neighbor clauses state (get-all-vars clauses) (length unsat)) #f) 
+             (simple-hill-climb clauses 
+                                (flip-var (list-ref (get-all-vars unsat) (random (length (get-all-vars unsat)))) state)
+                                (- dist 1)
+                                (unsat-clauses clauses (flip-var (list-ref (get-all-vars unsat) (random (length (get-all-vars unsat)))) state)))
+             
+             (simple-hill-climb clauses 
+                                (get-better-neighbor clauses state (get-all-vars clauses) (length unsat))
+                                (- dist 1)
+                                (unsat-clauses clauses (get-better-neighbor clauses state (get-all-vars clauses) (length unsat)))))
+             state))))
+                                
+
+
+;(simple-hill-climb clauses3 state 100 (unsat-clauses clauses3 state))
+;(unsat-clauses clauses3 (simple-hill-climb clauses3 state 100 (unsat-clauses clauses3 state)));

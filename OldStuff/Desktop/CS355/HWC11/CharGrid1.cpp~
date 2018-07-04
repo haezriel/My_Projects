@@ -1,0 +1,27 @@
+#include "CharGrid1.h"
+#include <cstdlib>
+
+int main(){
+}
+CharGrid1::CharGrid1(const CharGrid1& other)
+ : _width{other._width},
+ _height{other._height},
+ _grid{new char[other._width*other._height]}
+ {
+ for (int i = 0; i < _width; i++)
+ 	for (int j = 0; j < _height; j++)
+ 		_grid[i*j] = other._grid[i*j];
+ }
+
+CharGrid1& CharGrid1::operator=(const CharGrid1& other) {
+ if (this != &other) {
+ _width = other._width;
+ _height = other._height;
+ delete[] _grid;
+ _grid = new char[_width*_height];
+ for (int i = 0; i < _width; i++)
+ 	for(int j = 0; j< _height; j++)
+ 		_grid[i*j] = other._grid[i*j];
+ }
+ return *this;
+ }

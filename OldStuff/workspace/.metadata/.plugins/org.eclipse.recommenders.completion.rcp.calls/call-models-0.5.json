@@ -1,0 +1,27 @@
+{
+  "/home/haezriel/workspace/PA2/src": {
+    "location": "/home/haezriel/workspace/PA2/src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027/home/haezriel/workspace/PA2/src\u0027. Skipped."
+  },
+  "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rt.jar": {
+    "coordinate": "jre:jre:zip:call:1.0.0",
+    "location": "/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rt.jar",
+    "status": "RESOLVED"
+  },
+  "/home/haezriel/workspace/PA3/src": {
+    "location": "/home/haezriel/workspace/PA3/src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027/home/haezriel/workspace/PA3/src\u0027. Skipped."
+  },
+  "/home/haezriel/workspace/PA4/src": {
+    "location": "/home/haezriel/workspace/PA4/src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027/home/haezriel/workspace/PA4/src\u0027. Skipped."
+  },
+  "/home/haezriel/workspace/ChatServer/src": {
+    "location": "/home/haezriel/workspace/ChatServer/src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027/home/haezriel/workspace/ChatServer/src\u0027. Skipped."
+  }
+}

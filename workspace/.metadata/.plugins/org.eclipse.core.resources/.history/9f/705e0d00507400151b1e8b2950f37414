@@ -1,0 +1,228 @@
+package gmbmd;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Comparator;
+
+import jig.Collision;
+import jig.ResourceManager;
+import jig.Vector;
+
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
+import org.newdawn.slick.state.transition.HorizontalSplitTransition;
+
+/**
+ * This state is active when the Game is being played. In this state, sound is
+ * turned on, the bounce counter begins at 0 and increases until 10 at which
+ * point a transition to the Game Over state is initiated. The user can also
+ * control the ball using the WAS & D keys.
+ * 
+ * Transitions From StartUpState
+ * 
+ * Transitions To GameOverState
+ */
+class PlayingState extends BasicGameState {
+	Image land=null;
+	int col;
+	int timer,timer2=0;
+	int dir=1;
+
+	@Override
+	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+	}
+
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		land= ResourceManager.getImage(GMBMDGame.GROUND_GROUND1_RSC); 
+	}
+
+	@Override
+	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+		GMBMDGame bg = (GMBMDGame) game;
+		g.drawImage(land, 0, 0);
+		g.drawString("state: "+ bg.state, 10, 30);
+		
+		for (int i = 0; i < bg.level.entities.size(); i++) {
+			if (bg.level.entities.get(i).destroyed == true){
+				bg.level.entities.remove(i);
+				}	
+		}
+
+		for (Enemy b : bg.level.entities){
+			b.render(g);
+		}
+		for (Object b : bg.level.objects){
+			b.render(g);
+		}
+		//for (Bang b : bg.explosions)
+		//	b.render(g);
+		bg.player.render(g);
+		if(bg.blade.lethal==true)
+			bg.blade.render(g);
+	}
+
+	@Override
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		Collision p = null;
+		Input input = container.getInput();
+		GMBMDGame bg = (GMBMDGame) game;
+		//bg.level.mapUpdate();
+
+		if(timer<=0){
+		if(Math.abs(bg.player.getX()-input.getMouseX())>Math.abs(bg.player.getY()-input.getMouseY())){
+			if(bg.player.getX()>input.getMouseX()){
+				bg.blade=bg.blader;
+				bg.blade.setPosition(bg.player.getX()-50, bg.player.getY());
+			}
+			else{
+				bg.blade=bg.bladel;
+				bg.blade.setPosition(bg.player.getX()+50, bg.player.getY());
+			}
+		}
+		else{
+			if(bg.player.getY()>input.getMouseY()){
+				bg.blade=bg.bladeu;
+				bg.blade.setPosition(bg.player.getX(), bg.player.getY()-50);
+			}
+			else{
+				bg.blade=bg.bladed;
+				bg.blade.setPosition(bg.player.getX(), bg.player.getY()+50);
+			}
+		}
+		
+			bg.blade.lethal=false;
+		}
+		else
+			timer-=delta;
+		
+		//container.setMouseGrabbed(true);
+		if (input.isKeyDown(Input.KEY_W)&&bg.player.w==0) {
+			bg.player.translate(0f, -5f);
+			bg.blade.translate(0f,-5f);
+		}
+		if (input.isKeyDown(Input.KEY_A) && bg.player.a==0) {
+			
+			bg.player.translate(-5f, 0f);
+			bg.blade.translate(-5f, 0f);
+		}
+		if (input.isKeyDown(Input.KEY_S)&&bg.player.s==0) {
+			bg.player.translate(0f, 5f);
+			bg.blade.translate(0f, 5f);
+		}
+		if (input.isKeyDown(Input.KEY_D)&&bg.player.d==0) {
+			bg.player.translate(5f, 0f);
+			bg.blade.translate(5f, 0f);
+		}
+		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)==true &&bg.blade.lethal!=true)
+		{
+			bg.blade.lethal=true;
+			timer=100;
+			
+		}
+		
+		bg.player.resetCollisions();
+
+		for(int i=0; i< bg.level.entities.size();i++){
+			if((p=bg.blade.collides(bg.level.entities.get(i)))!=null && bg.level.entities.get(i).type<1){
+				if (bg.blade.lethal==true)
+					bg.level.entities.get(i).destroyed=true;
+			}
+			if((p=bg.player.collides(bg.level.entities.get(i)))!=null)
+			{ 	
+				Vector key=p.getMinPenetration();
+				bg.player.setCollisions(key);
+			}
+			else{
+			switch (bg.level.entities.get(i).type) {
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			default:
+				if(timer2<=0){
+				bg.level.pathfind(bg.level.entities.get(0), bg.player);
+				timer2=1000;
+				}
+				timer2-=delta;
+				bg.level.entities.get(0).translate(bg.level.entities.get(0).movement);
+				/*	if (bg.level.entities.get(i).stuck==true)
+						bg.level.pathfind(bg.level.entities.get(i), bg.player);
+					else{
+						int x= 50-(int)(Math.random()*80);
+						int y = 50-(int) (Math.random()*80);
+						Vector move = new Vector(bg.player.getX()+x-bg.level.entities.get(i).getX(), bg.player.getY()+y-bg.level.entities.get(i).getY());
+				
+						if(bg.level.entities.get(i).getPosition().distance(bg.player.getPosition())<200){
+							if (bg.level.entities.get(i).tilt<1)
+							bg.level.entities.get(i).translate(move.add(move.getPerpendicular().scale((float)bg.level.entities.get(i).strafe)).unit());
+							else
+								bg.level.entities.get(i).translate(move.subtract(move.getPerpendicular().scale((float)bg.level.entities.get(i).strafe)).unit());
+						}
+						else
+							bg.level.entities.get(i).translate(move.unit());
+					}*/
+						if (bg.level.entities.get(i).getCoarseGrainedMaxX() >= bg.ScreenWidth) {
+						bg.level.entities.get(i).setPosition(bg.ScreenWidth/2, bg.ScreenHeight/2);
+					}
+					if (bg.level.entities.get(i).getCoarseGrainedMinX() <= 0) {
+						bg.level.entities.get(i).setPosition(bg.ScreenWidth/2, bg.ScreenHeight/2);
+						//bg.level.entities.get(i).translate(Map.RIGHT);
+					}
+					if (bg.level.entities.get(i).getCoarseGrainedMaxY() >= bg.ScreenHeight) {
+						bg.level.entities.get(i).setPosition(bg.ScreenWidth/2, bg.ScreenHeight/2);
+						bg.level.entities.get(i).translate(Map.UP);
+					}
+					if (bg.level.entities.get(i).getCoarseGrainedMinY() <= 0) {
+						bg.level.entities.get(i).setPosition(bg.ScreenWidth/2, bg.ScreenHeight/2);
+						bg.level.entities.get(i).translate(Map.DOWN);
+					}
+				//}
+				//else timer2-=delta;
+				/*for(int j=0;j<bg.level.entities.size();j++){
+					
+				if ((p=bg.level.entities.get(i).collides(bg.level.entities.get(j)))!=null && j!=i){
+					bg.level.entities.get(i).translate(p.getMinPenetration());
+					bg.level.entities.get(i).waiting=true;
+				}
+				else bg.level.entities.get(i).waiting=false;
+				}
+				if(bg.level.entities.get(i).waiting==false){
+				if(bg.player.getX()<bg.level.entities.get(i).getX())
+					movex=(float) -1;
+				else
+					movex=(float)1;
+				
+				if(bg.player.getY()<bg.level.entities.get(i).getY())
+					movey=(float) -1;
+				else 
+					movey=(float) 1;
+				bg.level.entities.get(i).translate(movex,movey);
+				System.out.println(movex+movey);
+				}*/
+				
+				
+			}
+			}
+			
+		}
+		
+		
+		if (input.isKeyPressed(Input.KEY_J))
+			bg.state+=1;
+	}
+
+	@Override
+	public int getID() {
+		return GMBMDGame.PLAYINGSTATE;
+	}
+
+}

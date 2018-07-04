@@ -1,0 +1,49 @@
+Review
+
+Agent Types - 
+    Rule Based:
+        Reflex Agent - no memory
+        Model-Based Agent - memory
+
+    Goal Based:
+        Goal-Based Agent
+        Learning Agent
+
+Environments - 
+    Observable: 
+        1. Partially/Fully
+        2. Single/Multi-Agent
+        3. Stochastic/Deterministic
+        4. Static/Dynamic
+        5. Discrete/Continuous
+        6. Episodic/Sequential
+        7. Unknown/Known
+
+Search - 
+    Uninformed Search - 
+        Breadth First Search - B^d 
+        Depth First Search - B^d
+        Uniform Cost Search - turn this into Breadth First and Depth First
+        Depth Limited DFS(Constraint Satisfaction)/ Iterative Deepening DFS 
+               
+        
+        
+    Informed Search - 
+        A* Search - Better heuristic means better performance      
+        
+        Under-estimation - Euclidean distance (slight underestimation) vs. Crow Flies (potentially heavy underestimation)
+        Over-estimation - potential benefit (reach goal quickly) vs. drawbacks (less optimal paths/possibly infinite exploration in wrong direction).
+        0 cost edges / negative cost edges - why are they bad?  Without a closed list, 0 cost edges can cause infinite loops.  Negative cost edges are illogical and generate infinite loops while decreasing path costs on potentially inefficient searches.
+    
+        Local Search - 
+            Simulated Annealing - what it is, what it does
+            Hill-Climbing - explanation, demonstration (how can it be improved? Random Restart, Sim. Annealing, Informed Function, etc.)
+
+Constraint Satisfaction- you know how many variables/nodes needs to be assigned, and therefore know the exact depth in the tree at which you will potentially find a valid state for your search.
+
+Give examples of where each search would be useful/efficient
+
+When is the closed list needed?
+    What function does it serve?
+
+

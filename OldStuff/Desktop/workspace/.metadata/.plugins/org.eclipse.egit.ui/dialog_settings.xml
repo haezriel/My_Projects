@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="/home/haezriel/git" key="GitSelectRepositoryPage.lastRepository"/>
+	<item value="0" key="org.eclipse.egit.ui.internal.clone.GitSelectWizardPageWizardSel"/>
+	<item value="true" key="CommitDialog.showUntracked"/>
+	<list key="CommitDialog.authorValues">
+		<item value="haezriel &lt;michael.allen-bond@email.wsu.edu&gt;"/>
+		<item value="Lise Ann Driggers &lt;Lise.driggers@gmail.comgit config --global user.email Lise.driggers@gmail.com&gt;"/>
+	</list>
+	<list key="CommitDialog.committerValues">
+		<item value="haezriel &lt;michael.allen-bond@email.wsu.edu&gt;"/>
+	</list>
+	<list key="RepositorySelectionPage.UsedUris">
+		<item value="https://github.com/MashimarroDuckface/car_l_marx.git"/>
+		<item value="http://69.166.62.18/lise.driggers/car_l_marx.git"/>
+		<item value="http://http://69.166.62.18//lise.driggers/car_l_marx.git"/>
+		<item value="http://http://69.166.62.18/lise.driggers/car_l_marx.git/http://69.166.62.18/lise.driggers/car_l_marx.git"/>
+		<item value="http://http://69.166.62.18/lise.driggers/car_l_marx.git/home/haezriel/git/car_l_marx"/>
+		<item value="haezriel@69.166.62.18:lise.driggers/car_l_marx.git"/>
+		<item value="git@69.166.62.18:lise.driggers/car_l_marx.git"/>
+		<item value="ssh://haezriel@69.166.62.18/lise.driggers/car_l_marx.git"/>
+		<item value="ssh://git@69.166.62.18/lise.driggers/car_l_marx.git"/>
+	</list>
+	<section name="org.eclipse.egit.ui.internal.dialogs.ResetTargetSelectionDialog.dialogBounds">
+		<item value="613" key="DIALOG_WIDTH"/>
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+		<item value="744" key="DIALOG_HEIGHT"/>
+		<item value="344" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="GitImportWizard">
+		<item value="true" key="GitProjectsImportPage.STORE_NESTED_PROJECTS"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.dialogs.MergeTargetSelectionDialog.dialogBounds">
+		<item value="593" key="DIALOG_WIDTH"/>
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+		<item value="714" key="DIALOG_HEIGHT"/>
+		<item value="344" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="GitCommitMessageComponent">
+	</section>
+	<section name="org.eclipse.egit.ui.internal.dialogs.RebaseTargetSelectionDialog.dialogBounds">
+		<item value="613" key="DIALOG_WIDTH"/>
+		<item value="58" key="DIALOG_Y_ORIGIN"/>
+		<item value="488" key="DIALOG_HEIGHT"/>
+		<item value="354" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.egit.ui.COMMIT_DIALOG_SECTION">
+		<item value="648" key="DIALOG_WIDTH"/>
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+		<item value="337" key="DIALOG_X_ORIGIN"/>
+		<item value="744" key="DIALOG_HEIGHT"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.pull.PullResultDialog.dialogBounds">
+		<item value="648" key="DIALOG_WIDTH"/>
+		<item value="176" key="DIALOG_Y_ORIGIN"/>
+		<item value="287" key="DIALOG_X_ORIGIN"/>
+		<item value="264" key="DIALOG_HEIGHT"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.fetch.FetchResultDialog.dialogBounds">
+		<item value="613" key="DIALOG_WIDTH"/>
+		<item value="84" key="DIALOG_Y_ORIGIN"/>
+		<item value="345" key="DIALOG_X_ORIGIN"/>
+		<item value="402" key="DIALOG_HEIGHT"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.merge.MergeResultDialog.dialogBounds">
+		<item value="1301" key="DIALOG_WIDTH"/>
+		<item value="247" key="DIALOG_Y_ORIGIN"/>
+		<item value="229" key="DIALOG_HEIGHT"/>
+		<item value="0" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.push.PushResultDialog.dialogBounds">
+		<item value="633" key="DIALOG_WIDTH"/>
+		<item value="88" key="DIALOG_Y_ORIGIN"/>
+		<item value="325" key="DIALOG_X_ORIGIN"/>
+		<item value="547" key="DIALOG_HEIGHT"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+</section>

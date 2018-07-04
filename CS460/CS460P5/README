@@ -1,0 +1,20 @@
+Michael Allen-Bond
+WSU ID: 011386199
+CS460 - Dr. Zhang
+Project 5
+04/21/2016
+
+README:
+
+Archive Contents:
+
+	README.txt
+	xv6P5 (directory)
+
+
+Type "make" while in the xv6P5 directory to compile, or "make qemu" to compile and run the qemu shell.
+
+Should pass bigtest.
+
+Thank you for your time.
+

@@ -1,0 +1,54 @@
+Michael Allen-Bond
+WSU ID: 011386199
+Email: michael.allen-bond@wsu.edu
+CS427
+02/17/2016
+Dr. Mocas
+
+Project 1: WSU Cipher
+
+README:
+
+
+This is a basic cipher program:
+
+Encrypt.c
+It reads bits from "plaintext.txt",
+Encrypts and outputs it to "cyphertext.txt"
+And generates/uses keys from "key.txt"
+
+Valid Usage:
+>./encrypt  (This runs encryption on plaintext.txt using the key in key.txt).
+>./encrypt k (This does the same but randomly generates a key which is stored in key.txt).
+>./encrypt d (This does the same but prints debugging information).
+
+Decrypt.c
+It reads bits from "cyphertext.txt",
+Decrypts and outputs to "plaintext.txt"
+And uses the key from "key.txt"
+
+Valid Usage:
+>./decrypt  (This decrypts cyphertext.txt into plaintext.txt)
+>./decrypt d (This shows debugging information and outputs to output.txt instead of plaintext.txt)
+
+
+Archive Contents:
+
+	plaintext.txt - contains the plaintext before/after encryption/decryption
+	cyphertext.txt - contains the encrypted text
+	key.txt - contains the key
+	output.txt - output file for debugging purposes (ignore)
+	encrypt.c - encryption source code
+	decrypt.c - decryption source code
+	Makefile 
+	README
+
+
+TO COMPILE:
+
+>make
+
+TO RUN (assuming you have plaintext.txt and key.txt in your directory):
+>./encrypt
+
+>./decrypt

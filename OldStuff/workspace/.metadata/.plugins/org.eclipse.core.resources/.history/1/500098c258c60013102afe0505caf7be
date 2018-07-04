@@ -1,0 +1,82 @@
+
+public class Rat {
+	int numer,denom;
+	
+	public Rat(int num, int num2){
+		numer=num;
+		denom=num2;
+		reduce();
+	}
+	public Rat(int num){
+		numer=num;
+		denom=1;
+		reduce();
+	}
+	int num(){
+		return numer;
+		
+	}
+	int denom(){
+		return denom;
+	}
+	Rat add(Rat num){
+		Rat sum=new Rat(numer*num.denom+denom*num.numer,denom*num.denom);
+		sum.reduce();
+		return sum;
+	}
+	Rat sub(Rat num){
+		Rat diff=new Rat(numer*num.denom-denom*num.numer,denom*num.denom);
+		diff.reduce();
+		return diff;
+	}
+	Rat div(Rat num){
+		Rat quotient=new Rat(numer*num.denom,denom*num.numer);
+		quotient.reduce();
+		return quotient;
+	}
+	Rat times(Rat num){
+		Rat product=new Rat(numer*num.numer,denom*num.denom);
+		product.reduce();
+		return product;
+	}
+	Double toDouble(){
+		double numerd=(double)numer;
+		double denomd=(double)denom;
+		double decimal=numerd/denomd;
+		return decimal;
+	}
+	private void reduce(){
+		int a,b,x;
+		a=numer;
+		b=denom;
+		if(b==0) return;
+		if(a%b==0){
+			numer=numer/b;
+			denom=denom/b;
+			return;
+		}
+		while(a%b!=0){
+			x=a%b;
+			a=b;
+			b=x;
+		}
+		numer=numer/b;
+		denom=denom/b;
+		return;
+	}
+	void print(){
+		reduce();
+		if(denom==1){
+		System.out.println(numer);
+		}
+		else if(denom==-1){
+			System.out.println(-numer);
+		}
+		else if (denom>1 || denom==0){
+			System.out.println(numer+"/"+denom);
+		}
+		else if (denom<-1){
+			System.out.println(-numer+"/"+-denom);
+		}
+	}
+}

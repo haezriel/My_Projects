@@ -1,0 +1,55 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+
+public class PA3Frame extends JFrame {
+
+	int lastX=0,lastY=0;
+    boolean init=true;
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PA3Frame frame = new PA3Frame();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public PA3Frame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 652, 496);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+	}
+	public void paint(Graphics g) // override default paint() method
+		   {
+		     if (init){
+		       g.setColor(new Color(255,255,255));
+		       g.fillRect(0,0,getWidth(),getHeight());
+		       init=false;
+		     }
+		     g.setColor(new Color(255,0,0));
+		     g.drawOval(lastX,lastY,30,30);
+		   }
+}
+
